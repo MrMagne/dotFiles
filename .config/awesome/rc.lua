@@ -423,6 +423,27 @@ membar:set_gradient_colors({ beautiful.fg_widget,
 vicious.register(membar, vicious.widgets.mem, "$1", 13)
 -- }}}
 
+-- {{{ Update Manager
+--vicious.cache(vicious.widget.pkg)
+--pkgicon = widget({ type = "imagebox" })
+--pkgicon.image = image(beautiful.widget_mem)
+--pkgtext = widget({ type = "textbox" })
+--vicious.register(pkgtext, vicious.widget.pkg, "", "Arch")
+-- }}}
+
+-- {{{ Pacman widget
+pacman_icon = widget({type = "imagebox", name = "pacman_icon" })
+pacman_icon.image = image(beautiful.widget_pacman)
+pacman = widget({type = "textbox"})
+vicious.register(pacman, vicious.widgets.pkg, "$1", 300, "Arch")
+pacman_buttons = awful.util.table.join(
+  awful.button({ }, 1, function () awful.util.spawn(terminal.." -e sudo pacman -Su") end)
+)
+pacman:buttons(pacman_buttons)
+pacman_icon:buttons(pacman_buttons)
+-- }}}
+
+
 -- Create a systray
 mysystray = widget({ type = "systray" })
 
@@ -516,6 +537,7 @@ for s = 1, screen.count() do
         mytextclock, separator,
         (s == 1) and mysystray or nil,
         volwidget,  volbar.widget, volicon, separator,
+        pacman, pacman_icon, separator,
         netwidgetup, myneticonup, netwidgetdown, myneticondown, separator,
         membar.widget, memicon, separator,
         cpugraph.widget, cpuicon, separator,
@@ -711,7 +733,7 @@ awful.rules.rules = {
     { rule = { role = "gimp-toolbox" },
       properties = { floating = true, ontop = true } },
     { rule = { class = "Qt4-ssh-askpass" },
-      properties = { floating = true, ontop = true } },
+      properties = { floating = true, ontop = true, modal=true, focus=true } },
 
     -- Set Firefox to always map on tags number 2 of screen 1.
     -- { rule = { class = "Firefox" },

@@ -3,8 +3,9 @@ URxvt*foreground:       #BBBBBB
 URxvt*transparent:      true
 URxvt*shading:          40
 URxvt*visualBell:       true
+URxvt.urgentOnBell:     true
 URxvt*scrollBar_right:  true
-URxvt.urlLauncher:      chromium-browser
+URxvt.urlLauncher:      xdg-open
 URxvt.matcher.button:   1
 URxvt.perl-ext-common:  matcher,readline
 

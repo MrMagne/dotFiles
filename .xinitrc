@@ -4,15 +4,18 @@
 #
 # Executed by startx (run your window manager from here)
 
-if which dbus-launch >/dev/null && test -z "$DBUS_SESSION_BUS_ADDRESS"; then
-       eval "$(dbus-launch --sh-syntax --exit-with-session)"
-fi
+#if which dbus-launch >/dev/null && test -z "$DBUS_SESSION_BUS_ADDRESS"; then
+#       eval "$(dbus-launch --sh-syntax --exit-with-session)"
+#fi
 
+#nautilus -n &
+#sleep 2
 urxvtd -q -f -o
 xscreensaver -log .xscreensaver.log -nosplash &
+thunar --daemon &
 ########## awesome #####################
 eval $(ssh-agent)
-exec ck-launch-session awesome
+exec ck-launch-session dbus-launch awesome
 ########################################
 killall urxvtd
 
