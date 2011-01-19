@@ -68,6 +68,9 @@ tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
     tags[s] = awful.tag({ 1, 2, 3, 4 }, s, layouts[1])
+    for t in ipairs(tags[s]) do
+      awful.tag.setmwfact(0.75, tags[s][t])
+    end
 end
 -- }}}
 
@@ -108,7 +111,7 @@ system_items = { { "shutdown", "sudo /sbin/halt", "/usr/share/icons/Tango/16x16/
 --menu_separator = { "", height="1" }
 
 menu_items =  { { "awesome", myawesomemenu, beautiful.awesome_icon },
-                { "applications", free_desktop_menu, "/home/archy/.config/awesome/archlinux-wm-awesome.png" }
+                { "applications", free_desktop_menu, os.getenv("HOME").."/.config/awesome/archlinux-wm-awesome.png" }
 }
 for l in ipairs(favoriteapps) do table.insert(menu_items, favoriteapps[l]) end
 --table.insert(menu_items, menu_separator)
@@ -132,46 +135,76 @@ end
 quicklaunch.layout = awful.widget.layout.horizontal.leftright
 
 -- {{{ Wibox
+-- Set background color
+function bg(color, text)
+    return '<bg color="' .. color .. '" />' .. text
+end
+
+-- Set foreground color
+function fg(color, text)
+    return '<span color="' .. color .. '">' .. text .. '</span>'
+end
+
+-- Boldify text
+function bold(text)
+    return '<b>' .. text .. '</b>'
+end
+
+-- Emphasis text
+function italic(text)
+    return '<i>' .. text .. '</i>'
+end
+
 -- Create a textclock widget
-mytextclock = awful.widget.textclock({ align = "right" })
---[[
--- {{{ Cache these widgets
-vicious.cache(vicious.widgets.net)
---vicious.cache(vicious.widgets.bat)
---vicious.cache(vicious.widgets.wifi)
-vicious.cache(vicious.widgets.mpd)
-vicious.cache(vicious.widgets.gmail)
+-- {{{ Naughty Calendar
+calendar = {
+    offset = 0,
+    font = "monospace"
+}
+
+function calendar:month(month_offset)
+    local save_offset = self.offset
+    self:remove()
+    self.offset = save_offset + month_offset
+    local datespec = os.date("*t")
+    datespec = datespec.year * 12 + datespec.month - 1 + self.offset
+    datespec = (datespec % 12 + 1) .. " " .. math.floor(datespec / 12)
+    local cal = awful.util.pread("cal -m " .. datespec)
+    if self.offset == 0 then -- this month, hilight day and month
+        cal = string.gsub(cal, "%s" .. tonumber(os.date("%d")) .. "%s", italic(bold(fg(beautiful.hilight, "%1"))))
+        cal = string.gsub(cal, "^(%s*%w+%s+%d+)", italic(bold(fg(beautiful.hilight, "%1"))))
+    end
+
+    self.display = naughty.notify {
+        opacity = use_composite and beautiful.opacity.naughty or 1,
+        text = string.format('<span font_desc="%s">%s</span>', self.font, cal),
+        timeout = 0,
+        hover_timeout = 0.5,
+        margin = 10,
+    }
+end
+
+function calendar:remove()
+    if self.display ~= nil then
+        naughty.destroy(self.display)
+        self.display = nil
+        self.offset = 0
+    end
+end
 -- }}}
-]]--
--- Volume widget
--- Widget buttons
---volumeWidgetButtons = awful.util.table.join(
---    awful.button({ }, 1, function () awful.util.spawn("amixer set Master toggle") end),
---	awful.button({ }, 2, function () awful.util.spawn("amixer set Master toggle") end),
---	awful.button({ }, 3, function () awful.util.spawn("amixer set Master toggle") end),
---	awful.button({ }, 4, function () awful.util.spawn("amixer set Master 5%+") end),
---	awful.button({ }, 5, function () awful.util.spawn("amixer set Master 5%-") end),
---	awful.button({ }, 6, function () awful.util.spawn("amixer set Master 5%-") end),
---	awful.button({ }, 7, function () awful.util.spawn("amixer set Master 5%+") end)
---)
---
---volumebar        = widget({ type = "progressbar", name = "volumebar"})
---volumebar.width  = 50
---volumebar.height = 10
---volumebar.fg     = "#ffffff"
---volumebar:buttons(volumeWidgetButtons)
 
----- Initialize widget
---volumewidget = widget({ type = "textbox" })
---volumewidget:buttons(volumeWidgetButtons)
----- Register widget
---vicious.register(volumewidget, vicious.widgets.volume, 
---        function (widget, args)
---            volumebar.value = args[1]
---            return args[1] .. "%"
---        end, 1, "Master") 
+mytextclock = awful.widget.textclock({ align = "right" })
+mytextclock:add_signal("mouse::leave", function() calendar:remove() end)
+mytextclock:buttons(awful.util.table.join(
+    awful.button({ }, 1, function() calendar:month(0) end),
+    awful.button({ }, 2, function() calendar:month(0) end),
+    awful.button({ }, 3, function() calendar:month(0) end),
+    awful.button({ }, 5, function() calendar:month(1)  end),
+    awful.button({ }, 4, function() calendar:month(-1)  end))
+)
 
--- MPD widget
+--{{{ MPD widget
+vicious.cache(vicious.widgets.mpd)
 mpdWidgetButtons = awful.util.table.join(
     awful.button({ }, 1, function () awful.util.spawn("mpc toggle") end),
     awful.button({ }, 2, function () awful.util.spawn("mpc toggle") end),
@@ -188,15 +221,16 @@ mymusicicon:buttons(mpdWidgetButtons)
 
 --mympdstatefronttext = widget({ type = "textbox" })
 --mympdstatebacktext  = widget({ type = "textbox" })
-mympdstateicon    = widget({ type = "imagebox", name = "mympdstateicon" })
-mympdstateicon:buttons(mpdWidgetButtons)
-
 --mympdstatefronttext.text = ' <span color="#7f9f7f">[</span>'
 --mympdstatebacktext.text  = '<span color="#7f9f7f">]</span>'
+mympdstateicon    = widget({ type = "imagebox", name = "mympdstateicon" })
+mympdstateicon:buttons(mpdWidgetButtons)
 
 -- Initialize widget
 mpdwidget = widget({ type = "textbox" })
 mpdwidget:buttons(mpdWidgetButtons)
+mympdstateicon    = widget({ type = "imagebox", name = "mympdstateicon" })
+mympdstateicon:buttons(mpdWidgetButtons)
 -- Register widget
 vicious.register(mpdwidget, vicious.widgets.mpd, 
         function (widget, args)
@@ -210,7 +244,7 @@ vicious.register(mpdwidget, vicious.widgets.mpd,
 
             return args["{Artist}"] .. " - " .. args["{Title}"] .. " "
         end, 1)
-
+-- }}}
 --[[
 
 -- Gmail widget
@@ -239,7 +273,8 @@ vicious.register(gmailwidget, vicious.widgets.gmail,
         end, 180, {40, "gmailwidget"})
 ]]--
 
--- Network usage widget
+-- {{{ Network usage widget
+vicious.cache(vicious.widgets.net)
 myneticondown   = widget({ type = "imagebox", name = "myneticondown" })
 myneticonup     = widget({ type = "imagebox", name = "myneticonup" })
 
@@ -256,6 +291,58 @@ netwidgetup = widget({ type = "textbox" })
 netwidgetup.width=30
 -- Register widget
 vicious.register(netwidgetup, vicious.widgets.net, '<span color="#7F9F7F">${eth0 up_kb}</span>', 3)
+-- }}}
+
+--[[
+-- {{{ CPU usage and temperature
+vicious.cache(vicious.widgets.net)
+cpuicon = widget({ type = "imagebox" })
+cpuicon.image = image(beautiful.widget_cpu)
+-- Initialize widgets
+cpugraph  = awful.widget.graph()
+--tzswidget = widget({ type = "textbox" })
+-- Graph properties
+cpugraph:set_width(40):set_height(14)
+cpugraph:set_background_color(beautiful.fg_off_widget)
+cpugraph:set_gradient_angle(0):set_gradient_colors({
+   beautiful.fg_end_widget, beautiful.fg_center_widget, beautiful.fg_widget
+}) -- Register widgets
+vicious.register(cpugraph,  vicious.widgets.cpu,      "$1")
+--vicious.register(tzswidget, vicious.widgets.thermal, " $1C", 19, "thermal_zone0")
+-- }}}
+
+-- {{{ Battery state
+--baticon = widget({ type = "imagebox" })
+--baticon.image = image(beautiful.widget_bat)
+---- Initialize widget
+--batwidget = widget({ type = "textbox" })
+---- Register widget
+--vicious.register(batwidget, vicious.widgets.bat, "$1$2%", 61, "BAT0")
+-- }}}
+
+-- {{{ Memory usage
+vicious.cache(vicious.widgets.mem)
+memicon = widget({ type = "imagebox" })
+memicon.image = image(beautiful.widget_mem)
+-- Initialize widget
+membar = awful.widget.progressbar()
+-- Pogressbar properties
+membar:set_vertical(true):set_ticks(true)
+membar:set_height(12):set_width(8):set_ticks_size(2)
+membar:set_background_color(beautiful.fg_off_widget)
+membar:set_gradient_colors({ beautiful.fg_widget,
+   beautiful.fg_center_widget, beautiful.fg_end_widget
+}) -- Register widget
+vicious.register(membar, vicious.widgets.mem, "$1", 13)
+-- }}}
+-- {{{ Update Manager
+--vicious.cache(vicious.widget.pkg)
+--pkgicon = widget({ type = "imagebox" })
+--pkgicon.image = image(beautiful.widget_mem)
+--pkgtext = widget({ type = "textbox" })
+--vicious.register(pkgtext, vicious.widget.pkg, "", "Arch")
+-- }}}
+]]--
 
 -- {{{ Pacman widget
 pacman_icon = widget({type = "imagebox", name = "pacman_icon" })
@@ -268,7 +355,6 @@ pacman_buttons = awful.util.table.join(
 pacman:buttons(pacman_buttons)
 pacman_icon:buttons(pacman_buttons)
 -- }}}
-
 
 -- Create a systray
 mysystray = widget({ type = "systray" })
@@ -294,6 +380,9 @@ mytasklist.buttons = awful.util.table.join(
                                               end
                                               client.focus = c
                                               c:raise()
+                                          end), 
+                    awful.button({ }, 2, function (c)
+                                              c.minimized = not c.minimized
                                           end),
                      awful.button({ }, 3, function ()
                                               if instance then
@@ -341,29 +430,31 @@ for s = 1, screen.count() do
             mylauncher,
             mytaglist[s],
             separator,
+            --FIXME
+            --[[{
+              quicklaunch[1],
+              quicklaunch[2],
+              quicklaunch[3],
+              quicklaunch[4],
+              quicklaunch[5],
+              quicklaunch[6],
+              layout = quicklaunch["layout"]
+            },]]--
             quicklaunch,
             separator,
             mypromptbox[s],
             layout = awful.widget.layout.horizontal.leftright
         },
-        mylayoutbox[s],
-        --volumewidget,
-        --volbar.widget,
-        netwidgetup, myneticonup, netwidgetdown, myneticondown,
-        separator,
-        --gmailwidget,
-        ----mympdstatebacktext,
-        mymusicicon,
-        mympdstateicon,
-        ----mympdstatefronttext,
-        mpdwidget,
-        mymusicicon,
-        separator,
-        mytextclock,
-        separator,
+        mylayoutbox[s], separator,
+        mytextclock, separator,
+        (s == 1) and mysystray or nil,
+        --volwidget,  volbar.widget, volicon, separator,
         pacman, pacman_icon, separator,
-        s == 1 and mysystray or nil,
-        separator,
+        netwidgetup, myneticonup, netwidgetdown, myneticondown, separator,
+        --membar.widget, memicon, separator,
+        --cpugraph.widget, cpuicon, separator,
+        --gmailwidget, separator,
+        --[[mympdstatebacktext,]]mympdstateicon,mpdwidget,--[[mympdstatefronttext,]]separator,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
     }
@@ -396,6 +487,9 @@ globalkeys = awful.util.table.join(
             if client.focus then client.focus:raise() end
         end),
     awful.key({ modkey,           }, "w", function () mymainmenu:show({keygrabber=true}) end),
+
+    -- Lock Screen
+    -- awful.key({ modkey, "Control", altkey }, "Delete", function () awful.util.spawn("xscreensaver-command -lock") end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
@@ -544,8 +638,15 @@ awful.rules.rules = {
       properties = { floating = true } },
     { rule = { class = "Gcalctool" },
       properties = { floating = true } },
-    { rule = { class = "gimp" },
-      properties = { floating = true } },
+    -- { rule = { class = "gimp" },
+    --   properties = { floating = true, on_top = true } },
+    { rule = { role = "gimp-dock" },
+      properties = { floating = true, ontop = true } },
+    { rule = { role = "gimp-toolbox" },
+      properties = { floating = true, ontop = true } },
+    { rule = { class = "Qt4-ssh-askpass" },
+      properties = { floating = true, ontop = true, modal=true, focus=true } },
+
     -- Set Firefox to always map on tags number 2 of screen 1.
     -- { rule = { class = "Firefox" },
     --   properties = { tag = tags[1][2] } },
@@ -556,7 +657,7 @@ awful.rules.rules = {
 -- Signal function to execute when a new client appears.
 client.add_signal("manage", function (c, startup)
     -- Add a titlebar
-    -- awful.titlebar.add(c, { modkey = modkey })
+    -- awful.titlebar.add(c, { modkey = modkey, height="12" })
 
     -- Enable sloppy focus
     c:add_signal("mouse::enter", function(c)
