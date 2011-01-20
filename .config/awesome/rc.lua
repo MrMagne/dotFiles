@@ -205,6 +205,62 @@ mytextclock:buttons(awful.util.table.join(
     awful.button({ }, 4, function() calendar:month(-1)  end))
 )
 
+
+
+--[[
+-- {{{ Cache these widgets
+vicious.cache(vicious.widgets.net)
+--vicious.cache(vicious.widgets.bat)
+--vicious.cache(vicious.widgets.wifi)
+vicious.cache(vicious.widgets.gmail)
+-- }}}
+]]--
+
+-- {{{ Volume level
+volicon = widget({ type = "imagebox" })
+--volicon.image = image(beautiful.widget_vol)
+-- Initialize widgets
+volbar    = awful.widget.progressbar()
+volwidget = widget({ type = "textbox" })
+volbar:set_vertical(true):set_ticks(true)
+volbar:set_height(12):set_width(8):set_ticks_size(2)
+volbar:set_background_color(beautiful.fg_off_widget)
+volbar:set_gradient_colors({ beautiful.fg_widget,
+   beautiful.fg_center_widget, beautiful.fg_end_widget
+}) -- Enable caching
+vicious.cache(vicious.widgets.volume)
+-- Register widgets
+vicious.register(volbar,    vicious.widgets.volume,  "$1",  2, "Master")
+vicious.register(volwidget, vicious.widgets.volume, " $1%", 2, "Master")
+-- Register buttons
+volbar.widget:buttons(awful.util.table.join(
+    awful.button({ }, 1, function () awful.util.spawn("amixer set Master toggle >/dev/null") end),
+    awful.button({ }, 2, function () awful.util.spawn("amixer set Master toggle >/dev/null") end),
+    awful.button({ }, 3, function () awful.util.spawn(terminal.." -e alsamixer") end),
+    awful.button({ }, 4, function () awful.util.spawn("amixer set Master 5%+ >/dev/null") end),
+    awful.button({ }, 5, function () awful.util.spawn("amixer set Master 5%- >/dev/null") end),
+    awful.button({ }, 6, function () awful.util.spawn("amixer set Master 5%- >/dev/null") end),
+    awful.button({ }, 7, function () awful.util.spawn("amixer set Master 5%+ >/dev/null") end)
+)) -- Register assigned buttons
+volwidget:buttons(volbar.widget:buttons())
+
+-- Register widget
+vicious.register(volicon, vicious.widgets.volume, 
+      function (widget, args)
+          if args[1] == 0 or args[2] == "♩" then 
+            volicon.image=image(beautiful.widget_vol_mute)
+          elseif args[1] > 66 then
+            volicon.image=image(beautiful.widget_vol_hi)
+          elseif args[1] > 33 and args[1] <= 66 then
+            volicon.image=image(beautiful.widget_vol_mid)
+          else
+            volicon.image  = image(beautiful.widget_vol_low)
+          end
+      end, 
+      2, "Master")
+volicon:buttons(volbar.widget:buttons())
+-- }}}
+
 --{{{ MPD widget
 vicious.cache(vicious.widgets.mpd)
 mpdWidgetButtons = awful.util.table.join(
@@ -297,20 +353,45 @@ vicious.register(netwidgetup, vicious.widgets.net, '<span color="#7F9F7F">${eth0
 
 --[[
 -- {{{ CPU usage and temperature
-vicious.cache(vicious.widgets.net)
+vicious.cache(vicious.widgets.cpu)
 cpuicon = widget({ type = "imagebox" })
 cpuicon.image = image(beautiful.widget_cpu)
+cpuWidgetButtons = awful.util.table.join(
+    awful.button({ }, 1, 
+      function ()
+        cpus_visible = not cpus_visible
+        for i,c in ipairs(cpus) do
+          c.widget.visible = cpus_visible
+        end
+      end)
+)
+cpuicon:buttons(cpuWidgetButtons)
 -- Initialize widgets
 cpugraph  = awful.widget.graph()
---tzswidget = widget({ type = "textbox" })
--- Graph properties
 cpugraph:set_width(40):set_height(14)
 cpugraph:set_background_color(beautiful.fg_off_widget)
 cpugraph:set_gradient_angle(0):set_gradient_colors({
    beautiful.fg_end_widget, beautiful.fg_center_widget, beautiful.fg_widget
-}) -- Register widgets
+})
+cpugraph.widget:buttons(cpuWidgetButtons)
 vicious.register(cpugraph,  vicious.widgets.cpu,      "$1")
---vicious.register(tzswidget, vicious.widgets.thermal, " $1C", 19, "thermal_zone0")
+
+cpus = {}
+cpus_widgets = {}
+cpus_visible = false
+for i = 1,4 do
+  cpus[i] = awful.widget.graph()
+  cpus_widgets[i] = cpus[i].widget
+  cpus[i].widget.visible = cpus_visible
+  cpus[i]:set_width(40):set_height(14)
+  cpus[i]:set_background_color(beautiful.fg_off_widget)
+  cpus[i]:set_border_color(beautiful.border_marked)
+  cpus[i]:set_gradient_angle(0):set_gradient_colors({
+    beautiful.fg_end_widget, beautiful.fg_center_widget, beautiful.fg_widget
+  })
+  vicious.register(cpus[i],  vicious.widgets.cpu,       "$"..(i+1))
+  cpus[i].widget:buttons(cpuWidgetButtons)
+end
 -- }}}
 
 -- {{{ Battery state
@@ -337,22 +418,26 @@ membar:set_gradient_colors({ beautiful.fg_widget,
 }) -- Register widget
 vicious.register(membar, vicious.widgets.mem, "$1", 13)
 -- }}}
--- {{{ Update Manager
---vicious.cache(vicious.widget.pkg)
---pkgicon = widget({ type = "imagebox" })
---pkgicon.image = image(beautiful.widget_mem)
---pkgtext = widget({ type = "textbox" })
---vicious.register(pkgtext, vicious.widget.pkg, "", "Arch")
--- }}}
-]]--
 
 -- {{{ Pacman widget
 pacman_icon = widget({type = "imagebox", name = "pacman_icon" })
-pacman_icon.image = image(beautiful.widget_pacman)
 pacman = widget({type = "textbox"})
-vicious.register(pacman, vicious.widgets.pkg, "$1", 300, "Arch")
+--vicious.register(pacman, vicious.widgets.pkg, "$1", 300, "Arch")
+vicious.register(pacman, vicious.widgets.pkg, 
+  function(widget,args) 
+    if (args[1]==0) then
+      pacman.visible = false
+      pacman_icon.visible = false
+    else
+      pacman.visible = true
+      pacman_icon.visible = true
+    end
+    return args[1] 
+  end, 300, "Arch")
 pacman_buttons = awful.util.table.join(
-  awful.button({ }, 1, function () awful.util.spawn(terminal.." -e sudo pacman -Su") end)
+  awful.button({ }, 1, function () awful.util.spawn(terminal..
+    " -T pacman_update -e bash -c \"sudo pacman -Su;"..
+    " read -p 'Press a key to continue'\"") end)
 )
 pacman:buttons(pacman_buttons)
 pacman_icon:buttons(pacman_buttons)
@@ -449,12 +534,15 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s], separator,
         mytextclock, separator,
-        (s == 1) and mysystray or nil,
-        --volwidget,  volbar.widget, volicon, separator,
-        pacman, pacman_icon, separator,
+        (s == 1) and {mysystray,pacman, pacman_icon} or nil,
+        volwidget,  volbar.widget, volicon, separator,
+        --pacman, pacman_icon, separator,
         netwidgetup, myneticonup, netwidgetdown, myneticondown, separator,
-        --membar.widget, memicon, separator,
-        --cpugraph.widget, cpuicon, separator,
+        membar.widget, memicon, separator,
+        --FIXME
+        --cpus_widgets,
+        cpus_widgets[1], cpus_widgets[2], cpus_widgets[3], cpus_widgets[4],
+        cpugraph.widget, cpuicon, separator,
         --gmailwidget, separator,
         --[[mympdstatebacktext,]]mympdstateicon,mpdwidget,--[[mympdstatefronttext,]]separator,
         mytasklist[s],
