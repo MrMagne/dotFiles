@@ -416,6 +416,7 @@ vicious.register(membar, vicious.widgets.mem, "$1", 13)
 
 -- {{{ Pacman widget
 pacman_icon = widget({type = "imagebox", name = "pacman_icon" })
+pacman_icon.image = image(beautiful.widget_pacman)
 pacman = widget({type = "textbox"})
 --vicious.register(pacman, vicious.widgets.pkg, "$1", 300, "Arch")
 vicious.register(pacman, vicious.widgets.pkg, 
@@ -430,9 +431,13 @@ vicious.register(pacman, vicious.widgets.pkg,
     return args[1] 
   end, 300, "Arch")
 pacman_buttons = awful.util.table.join(
-  awful.button({ }, 1, function () awful.util.spawn(terminal..
-    " -T pacman_update -e bash -c \"sudo pacman -Su;"..
-    " read -p 'Press a key to continue'\"") end)
+  awful.button({ }, 1, 
+    function () 
+      awful.util.spawn(terminal..
+        " -T pacman_update -e bash -c \"sudo pacman -Su;"..
+        " read -p 'Press a key to continue'\"") 
+      vicious.force({pacman, pacman_icon})
+    end)
 )
 pacman:buttons(pacman_buttons)
 pacman_icon:buttons(pacman_buttons)
@@ -529,8 +534,8 @@ for s = 1, screen.count() do
             layout = awful.widget.layout.horizontal.leftright
         },
         mylayoutbox[s], separator,
-        mytextclock, separator,
-        (s == 1) and {mysystray,pacman, pacman_icon} or nil,
+        pacman, pacman_icon, mytextclock, separator,
+        (s == 1) and mysystray or nil,
         volwidget,  volbar.widget, volicon, separator,
         --pacman, pacman_icon, separator,
         netwidgetup, myneticonup, netwidgetdown, myneticondown, separator,
