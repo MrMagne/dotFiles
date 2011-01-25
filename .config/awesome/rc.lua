@@ -234,13 +234,13 @@ vicious.register(volbar,    vicious.widgets.volume,  "$1",  2, "Master")
 vicious.register(volwidget, vicious.widgets.volume, " $1%", 2, "Master")
 -- Register buttons
 volbar.widget:buttons(awful.util.table.join(
-    awful.button({ }, 1, function () awful.util.spawn("amixer set Master toggle >/dev/null") end),
-    awful.button({ }, 2, function () awful.util.spawn("amixer set Master toggle >/dev/null") end),
-    awful.button({ }, 3, function () awful.util.spawn(terminal.." -e alsamixer") end),
-    awful.button({ }, 4, function () awful.util.spawn("amixer set Master 5%+ >/dev/null") end),
-    awful.button({ }, 5, function () awful.util.spawn("amixer set Master 5%- >/dev/null") end),
-    awful.button({ }, 6, function () awful.util.spawn("amixer set Master 5%- >/dev/null") end),
-    awful.button({ }, 7, function () awful.util.spawn("amixer set Master 5%+ >/dev/null") end)
+    awful.button({ }, 1, function () awful.util.spawn("amixer set Master toggle >/dev/null") vicious.force({volbar, volwidget}) end),
+    awful.button({ }, 2, function () awful.util.spawn("amixer set Master toggle >/dev/null") vicious.force({volbar, volwidget}) end),
+    awful.button({ }, 3, function () awful.util.spawn(terminal.." -e alsamixer") vicious.force({volbar, volwidget}) end),
+    awful.button({ }, 4, function () awful.util.spawn("amixer set Master 5%+ >/dev/null") vicious.force({volbar, volwidget}) end),
+    awful.button({ }, 5, function () awful.util.spawn("amixer set Master 5%- >/dev/null") vicious.force({volbar, volwidget}) end),
+    awful.button({ }, 6, function () awful.util.spawn("amixer set Master 5%- >/dev/null") vicious.force({volbar, volwidget}) end),
+    awful.button({ }, 7, function () awful.util.spawn("amixer set Master 5%+ >/dev/null") vicious.force({volbar, volwidget}) end)
 )) -- Register assigned buttons
 volwidget:buttons(volbar.widget:buttons())
 
@@ -256,6 +256,7 @@ vicious.register(volicon, vicious.widgets.volume,
           else
             volicon.image  = image(beautiful.widget_vol_low)
           end
+          
       end, 
       2, "Master")
 volicon:buttons(volbar.widget:buttons())
@@ -264,13 +265,13 @@ volicon:buttons(volbar.widget:buttons())
 --{{{ MPD widget
 vicious.cache(vicious.widgets.mpd)
 mpdWidgetButtons = awful.util.table.join(
-    awful.button({ }, 1, function () awful.util.spawn("mpc toggle") end),
-    awful.button({ }, 2, function () awful.util.spawn("mpc toggle") end),
-    awful.button({ }, 3, function () awful.util.spawn("mpc stop") end),
-    awful.button({ }, 4, function () awful.util.spawn("mpc next") end),
-    awful.button({ }, 5, function () awful.util.spawn("mpc prev") end),
-    awful.button({ }, 6, function () awful.util.spawn("mpc prev") end),
-    awful.button({ }, 7, function () awful.util.spawn("mpc next") end)
+    awful.button({ }, 1, function () awful.util.spawn("mpc toggle") vicious.force({ mpdwidget}) end),
+    awful.button({ }, 2, function () awful.util.spawn("mpc toggle") vicious.force({ mpdwidget}) end),
+    awful.button({ }, 3, function () awful.util.spawn("mpc stop") vicious.force({ mpdwidget}) end),
+    awful.button({ }, 4, function () awful.util.spawn("mpc next") vicious.force({ mpdwidget}) end),
+    awful.button({ }, 5, function () awful.util.spawn("mpc prev") vicious.force({ mpdwidget}) end),
+    awful.button({ }, 6, function () awful.util.spawn("mpc prev") vicious.force({ mpdwidget}) end),
+    awful.button({ }, 7, function () awful.util.spawn("mpc next") vicious.force({ mpdwidget}) end)
 )
 
 mymusicicon       = widget({ type = "imagebox", name = "mymusicicon" })
@@ -299,7 +300,6 @@ vicious.register(mpdwidget, vicious.widgets.mpd,
             else
                 mympdstateicon.image = image(beautiful.widget_mpd_stopped)
             end
-
             return args["{Artist}"] .. " - " .. args["{Title}"] .. " "
         end, 1)
 -- }}}
@@ -441,7 +441,7 @@ pacman_buttons = awful.util.table.join(
       awful.util.spawn(terminal..
         " -T pacman_update -e bash -c \"sudo pacman -Su;"..
         " read -p 'Press a key to continue'\"") 
-      vicious.force({pacman, pacman_icon})
+      vicious.force({pacman})
     end)
 )
 pacman:buttons(pacman_buttons)
