@@ -93,9 +93,11 @@ myawesomemenu = {
 }
 
 favoriteapps = {
-                 { "pcmanfm", "pcmanfm", freedesktop.utils.lookup_icon({ icon="system-file-manager" }) },
-                 { "chromium", "chromium", "/usr/share/icons/hicolor/16x16/apps/chromium.png" },
-                 { "ario", "ario", "/usr/share/icons/hicolor/16x16/apps/ario.png" },
+                 --{ "pcmanfm", "pcmanfm", freedesktop.utils.lookup_icon({ icon="system-file-manager" }) },
+                 --{ "chromium", "chromium", "/usr/share/icons/hicolor/16x16/apps/chromium.png" },
+                 { "firefox", "firefox", "/usr/share/icons/hicolor/16x16/apps/firefox.png" },
+                 --{ "ario", "ario", "/usr/share/icons/hicolor/16x16/apps/ario.png" },
+                 { "gbemol", "gbemol", "/usr/share/pixmaps/gbemol.png" },
                  { "smplayer", "smplayer", "/usr/share/icons/hicolor/16x16/apps/smplayer.png" },
                  { "gcstar", "gcstar", "/usr/share/pixmaps/gcstar.png" },
                  { "libreoffice", "soffice -writer", "/usr/share/icons/hicolor/16x16/apps/ooo-writer.png" },
@@ -129,10 +131,14 @@ separator = widget({ type = "imagebox" })
 separator.image = image(beautiful.widget_sep)
 quicklaunch = {}
 for l in ipairs(favoriteapps) do 
-  table.insert(quicklaunch, awful.widget.launcher({ 
+  --table.insert(quicklaunch, awful.widget.launcher({ 
+  --                                                  image=favoriteapps[l][3], 
+  --                                                  --image=beautiful.awesome_icon, 
+  --                                                  command=favoriteapps[l][2] })) 
+  quicklaunch[#quicklaunch+1]= awful.widget.launcher({ 
                                                     image=favoriteapps[l][3], 
                                                     --image=beautiful.awesome_icon, 
-                                                    command=favoriteapps[l][2] })) 
+                                                    command=favoriteapps[l][2] })
 end
 quicklaunch.layout = awful.widget.layout.horizontal.leftright
 
@@ -516,43 +522,90 @@ for s = 1, screen.count() do
 
     -- Create the wibox
     mywibox[s] = awful.wibox({ position = "top", screen = s })
+--
+--    -- Widgets that are aligned to the left
+--    local left_layout = wibox.layout.fixed.horizontal()
+--    left_layout:add(mylauncher)
+--    left_layout:add(mytaglist[s])
+--    left_layout:add(mypromptbox[s])
+--    left_layout:add(separator)
+--    left_layout:add(quicklaunch)
+--    left_layout:add(separator)
+--
+--    -- Widgets that are aligned to the right
+--    local right_layout = wibox.layout.fixed.horizontal()
+--    right_layout:add(separator)
+--    right_layout:add(mpdwidget)
+--    right_layout:add(mympdstateicon)
+--    right_layout:add(separator)
+--    right_layout:add(cpuicon)
+--    right_layout:add(cpugraph.widget)
+--    right_layout:add(cpu_widgets)
+--    right_layout:add(separator)
+--    right_layout:add(memicon)
+--    right_layout:add(membar.widget)
+--    right_layout:add(separator)
+--    right_layout:add(myneticondown)
+--    right_layout:add(netwidgetdown)
+--    right_layout:add(myneticonup)
+--    right_layout:add(netwidgetup)
+--    right_layout:add(separator)
+--    right_layout:add(volicon)
+--    right_layout:add(volbar.widget)
+--    right_layout:add(volwidget)
+--    if s == 1 then right_layout:add(wibox.widget.systray()) end
+--    right_layout:add(mytextclock)
+--    right_layout:add(pacman_icon)
+--    right_layout:add(pacman)
+--    right_layout:add(separator)
+--    right_layout:add(mylayoutbox[s])
+--
+--    -- Now bring it all together (with the tasklist in the middle)
+--    local layout = wibox.layout.align.horizontal()
+--    layout:set_left(left_layout)
+--    layout:set_middle(mytasklist[s])
+--    layout:set_right(right_layout)
+--
+--    mywibox[s]:set_widget(layout)
+--
     -- Add widgets to the wibox - order matters
-    mywibox[s].widgets = {
-        {
-            mylauncher,
-            mytaglist[s],
-            separator,
-            --FIXME
-            --[[{
-              quicklaunch[1],
-              quicklaunch[2],
-              quicklaunch[3],
-              quicklaunch[4],
-              quicklaunch[5],
-              quicklaunch[6],
-              layout = quicklaunch["layout"]
-            },]]--
-            quicklaunch,
-            separator,
-            mypromptbox[s],
-            layout = awful.widget.layout.horizontal.leftright
-        },
-        mylayoutbox[s], separator,
-        pacman, pacman_icon, mytextclock, separator,
-        (s == 1) and mysystray or nil,
-        volwidget,  volbar.widget, volicon, separator,
-        --pacman, pacman_icon, separator,
-        netwidgetup, myneticonup, netwidgetdown, myneticondown, separator,
-        membar.widget, memicon, separator,
-        --FIXME
-        --cpus_widgets,
-        cpus_widgets[1], cpus_widgets[2], cpus_widgets[3], cpus_widgets[4],
-        cpugraph.widget, cpuicon, separator,
-        --gmailwidget, separator,
-        --[[mympdstatebacktext,]]mympdstateicon,mpdwidget,--[[mympdstatefronttext,]]separator,
-        mytasklist[s],
-        layout = awful.widget.layout.horizontal.rightleft
-    }
+    
+   mywibox[s].widgets = {
+       {
+           mylauncher,
+           mytaglist[s],
+           separator,
+           --FIXME
+           {
+             quicklaunch[1],
+             quicklaunch[2],
+             quicklaunch[3],
+             quicklaunch[4],
+             quicklaunch[5],
+             quicklaunch[6],
+             layout = quicklaunch["layout"]
+           },
+           --quicklaunch,
+           separator,
+           mypromptbox[s],
+           layout = awful.widget.layout.horizontal.leftright
+       },
+       mylayoutbox[s], separator,
+       pacman, pacman_icon, mytextclock, separator,
+       (s == 1) and mysystray or nil,
+       volwidget,  volbar.widget, volicon, separator,
+       --pacman, pacman_icon, separator,
+       netwidgetup, myneticonup, netwidgetdown, myneticondown, separator,
+       membar.widget, memicon, separator,
+       --FIXME
+       --cpus_widgets,
+       cpus_widgets[1], cpus_widgets[2], cpus_widgets[3], cpus_widgets[4],
+       cpugraph.widget, cpuicon, separator,
+       --gmailwidget, separator,
+       --[[mympdstatebacktext,]]mympdstateicon,mpdwidget,--[[mympdstatefronttext,]]separator,
+       mytasklist[s],
+       layout = awful.widget.layout.horizontal.rightleft
+   }
 end
 -- }}}
 
@@ -591,6 +644,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end),
     awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end),
     awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end),
+    awful.key({ modkey, altkey    }, "j", awful.tag.viewnext),
+    awful.key({ modkey, altkey    }, "k", awful.tag.viewprev),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
         awful.key({ modkey, "Shift"   }, "Tab", function ()
           awful.client.cycle(false)
@@ -642,6 +697,7 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
     awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
+    awful.key({ modkey,           }, "s",      function (c) c.sticky = not c.sticky          end),
     awful.key({ modkey,           }, "n",      function (c) c.minimized = not c.minimized    end),
     awful.key({ modkey,           }, "m",
         function (c)
@@ -728,6 +784,10 @@ awful.rules.rules = {
       properties = { floating = true, on_top = true } },
     { rule = { class = "Smplayer" },
       properties = { floating = true, on_top = true } },
+    { rule = { class = "Pidgin" },
+      properties = { floating = true, on_top = true } },
+    { rule = { class = "Pidgin",role="conversation" },
+      properties = { floating = true, focus = true } },
       --properties = { floating = true } },
     { rule = { class = "pinentry" },
       properties = { floating = true } },
@@ -739,8 +799,14 @@ awful.rules.rules = {
       properties = { floating = true, ontop = true } },
     { rule = { role = "gimp-toolbox" },
       properties = { floating = true, ontop = true } },
+    { rule = { class = "Enemy Territory" },
+      properties = { floating = true, ontop = true, modal=true, focus=true }, callback = awful.placement.centered },
     { rule = { class = "Qt4-ssh-askpass" },
-      properties = { floating = true, ontop = true, modal=true, focus=true } },
+      properties = { floating = true, ontop = true, modal=true, focus=true }, callback = awful.placement.centered },
+    { rule = { class = "Firefox", role="Manager" },
+      properties = { focus=false }, callback = awful.client.setslave },
+    { rule = { class = "URxvt" },
+      callback = awful.client.setslave },
 
     -- Set Firefox to always map on tags number 2 of screen 1.
     -- { rule = { class = "Firefox" },
