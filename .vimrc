@@ -5,9 +5,28 @@ filetype plugin on
 "helptags ~/.vim/doc
 runtime! ftplugin/man.vim
 nnoremap K :Man <cword><CR>
+set undofile
+set undodir=~/.vim/undofiles
+
+source ${VIM}/vimfiles/macros/clewn_mappings.vim
+let s:term = "urxvtc"
+function! ClewnToggle()
+  if(has("netbeans_enabled")) 
+    nbclose
+  else
+    exe "! ".s:term." -e clewn -x \"\""
+    redraw!
+    nbstart :localhost:3219:
+  endif
+endfunction  
+
+map <F6> :call ClewnToggle()<CR>
 
 "Tlist settings
+let Tlist_Compact_Format = 1
 let Tlist_Use_Right_Window=1
+let Tlist_File_Fold_Auto_Close = 1
+let Tlist_Show_Menu = 1
 "let Tlist_Auto_Open = 1
 let Tlist_Inc_Winwidth = 0
 :noremap <F3> :Tlist<CR> 
@@ -24,6 +43,7 @@ autocmd FileType tex setlocal spelllang=fr
 
 "NERDTree
 :noremap <F4> :NERDTreeToggle<CR> 
+:noremap <S-F4> :NERDTreeFind<CR>
 
 set autoindent
 set smartindent
@@ -57,8 +77,8 @@ autocmd BufEnter * exe "normal zR"
 "set nofoldenable
 
 set tags=.tags,./.tags,~/.tags,./tags,./TAGS,tags,TAGS
-map <C-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q -f .tags .<CR>
-imap <expr> <C-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q -f .tags .<CR>
+map <C-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase -f .tags .<CR>
+imap <expr> <C-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase -f .tags .<CR>
 imap <C-space> <C-X><C-O>
 
 let OmniCpp_MayCompleteDot = 0
@@ -73,8 +93,15 @@ if filereadable("./cscope.out")
   cs add ./cscope.out
 endif
 
-map <S-C-F12> :!cscope -Rbq <CR>
-imap <expr> <S-C-F12> :!cscope -Rbq <CR>
+function! UpdateCscope()
+  :!cscope -Rbq
+  cscope reset
+endfunction
+
+map <S-C-F12> :call UpdateCscope()<CR>
+imap <expr> <S-C-F12> :call UpdateCscope()<CR>
+map <C-@> :cscope find c <cword><CR>
+
 cnoreabbrev <expr> csa
       \ ((getcmdtype() == ':' && getcmdpos() <= 4)? 'cs add'  : 'csa')
 cnoreabbrev <expr> csf
