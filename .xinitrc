@@ -12,10 +12,15 @@
 #sleep 2
 urxvtd -q -f -o
 xscreensaver -log .xscreensaver.log -nosplash &
-thunar --daemon &
+pidgin &
+#dbus-launch --sh-syntax --exit-with-session thunar --daemon &
+#thunar --daemon &
 ########## awesome #####################
 eval $(ssh-agent)
-exec ck-launch-session dbus-launch awesome
+(sleep 2 && ~/bin/mount_sshfs) &
+#exec ck-launch-session awesome
+exec ck-launch-session dbus-launch --sh-syntax --exit-with-session awesome
+#exec awesome
 ########################################
 killall urxvtd
 
