@@ -1,0 +1,23 @@
+set editing-mode vi
+
+$if mode=vi
+  set keymap vi-insert
+  "\C-n": complete
+  "\e[1~": beginning-of-line
+  "\e[4~": end-of-line
+  "\e[5~": beginning-of-history
+  "\e[6~": end-of-history
+  "\e[7~": beginning-of-line
+  "\e[2~": quoted-insert # Insert
+  "\e[3~": delete-char
+  set keymap vi
+  "gg": beginning-of-history
+  "G": end-of-history
+  "\e[1~": beginning-of-line
+  "\e[4~": end-of-line
+  "\e[5~": beginning-of-history
+  "\e[6~": end-of-history
+  "\e[7~": beginning-of-line
+  "\e[2~": quoted-insert # Insert
+  "\e[3~": delete-char
+$endif
