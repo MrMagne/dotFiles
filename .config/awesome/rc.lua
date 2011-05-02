@@ -98,11 +98,13 @@ favoriteapps = {
                  { "ario", "ario", "/usr/share/icons/hicolor/16x16/apps/ario.png" },
                  { "smplayer", "smplayer", "/usr/share/icons/hicolor/16x16/apps/smplayer.png" },
                  { "gcstar", "gcstar", "/usr/share/pixmaps/gcstar.png" },
-                 { "oo-writer", "soffice -writer", "/usr/share/icons/hicolor/16x16/apps/writer.png" },
-                 { "oo-impress", "soffice -impress", "/usr/share/icons/hicolor/16x16/apps/impress.png" },
-                 { "oo-calc", "soffice -calc", "/usr/share/icons/hicolor/16x16/apps/ooocalc.png" },
+                 { "libreoffice", "soffice -writer", "/usr/share/icons/hicolor/16x16/apps/ooo-writer.png" },
+                 { "libreoffice -impress", "soffice -impress", "/usr/share/icons/hicolor/16x16/apps/ooo-impress.png" },
+                 { "libreoffice -calc", "soffice -calc", "/usr/share/icons/hicolor/16x16/apps/ooo-calc.png" },
                  { "scrabble", "/home/archy/WordBiz/wordbiz", "/usr/share/icons/Tango/16x16/actions/format-text-bold.png" },
+                 { "firefox", "firefox", "/usr/share/icons/hicolor/16x16/apps/firefox.png" },
                  { "terminal", terminal, freedesktop.utils.lookup_icon({ icon="terminal" }) },
+                 { "mplayerTube", "/home/archy/mplayerTube.sh", "/usr/share/icons/Tango/16x16/mimetypes/video-x-generic.png" },
 }
 
 system_items = { { "shutdown", "sudo /sbin/halt", "/usr/share/icons/Tango/16x16/actions/system-shutdown.png" },
