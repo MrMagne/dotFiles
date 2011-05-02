@@ -95,7 +95,7 @@ myawesomemenu = {
 favoriteapps = {
                  --{ "pcmanfm", "pcmanfm", freedesktop.utils.lookup_icon({ icon="system-file-manager" }) },
                  --{ "chromium", "chromium", "/usr/share/icons/hicolor/16x16/apps/chromium.png" },
-                 { "firefox", "firefox-beta-bin", "/usr/share/pixmaps/firefox-beta-bin-icon.png" },
+                 { "firefox", "firefox", "/usr/share/icons/hicolor/16x16/apps/firefox.png" },
                  --{ "ario", "ario", "/usr/share/icons/hicolor/16x16/apps/ario.png" },
                  { "gbemol", "gbemol", "/usr/share/pixmaps/gbemol.png" },
                  { "smplayer", "smplayer", "/usr/share/icons/hicolor/16x16/apps/smplayer.png" },
@@ -638,8 +638,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end),
     awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end),
     awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end),
-    awful.key({ modkey, altkey    }, "j", awful.tag.viewprev),
-    awful.key({ modkey, altkey    }, "k", awful.tag.viewnext),
+    awful.key({ modkey, altkey    }, "j", awful.tag.viewnext),
+    awful.key({ modkey, altkey    }, "k", awful.tag.viewprev),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
         awful.key({ modkey, "Shift"   }, "Tab", function ()
           awful.client.cycle(false)
