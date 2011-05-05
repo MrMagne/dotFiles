@@ -10,6 +10,7 @@ urxvtd -q -f -o
 xscreensaver -log .xscreensaver.log -nosplash &
 pidgin &
 
+<<<<<<< HEAD
 ## jack and alsa to jack bridge
 #/home/archy/.jack_alsa.sh &
 
