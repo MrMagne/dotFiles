@@ -12,10 +12,19 @@
 #sleep 2
 urxvtd -q -f -o
 xscreensaver -log .xscreensaver.log -nosplash &
-thunar --daemon &
+pidgin &
+
+#use white appearance for openoffice/libreoffice
+export SAL_USE_VCLPLUGIN=gen
+#dbus-launch --sh-syntax --exit-with-session thunar --daemon &
+#thunar --daemon &
 ########## awesome #####################
+#export $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh)
 eval $(ssh-agent)
-exec ck-launch-session dbus-launch awesome
+(sleep 2 && ~/bin/mount_sshfs) &
+#exec ck-launch-session awesome
+exec ck-launch-session dbus-launch --sh-syntax --exit-with-session awesome
+#exec awesome
 ########################################
 killall urxvtd
 
