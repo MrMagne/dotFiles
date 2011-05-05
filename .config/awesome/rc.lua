@@ -95,9 +95,9 @@ myawesomemenu = {
 favoriteapps = {
                  --{ "pcmanfm", "pcmanfm", freedesktop.utils.lookup_icon({ icon="system-file-manager" }) },
                  --{ "chromium", "chromium", "/usr/share/icons/hicolor/16x16/apps/chromium.png" },
-                 { "firefox", "firefox-beta-bin", "/usr/share/pixmaps/firefox-beta-bin-icon.png" },
-                 --{ "ario", "ario", "/usr/share/icons/hicolor/16x16/apps/ario.png" },
-                 { "gbemol", "gbemol", "/usr/share/pixmaps/gbemol.png" },
+                 { "firefox", "firefox", "/usr/share/pixmaps/firefox-beta-bin-icon.png" },
+                 { "ario", "ario", "/usr/share/icons/hicolor/16x16/apps/ario.png" },
+                 --{ "gbemol", "gbemol", "/usr/share/pixmaps/gbemol.png" },
                  { "smplayer", "smplayer", "/usr/share/icons/hicolor/16x16/apps/smplayer.png" },
                  { "gVim", "gvim", "/usr/share/pixmaps/gvim.png" },
                  { "calc", "gcalctool", freedesktop.utils.lookup_icon({ icon="calc" }) },
