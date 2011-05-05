@@ -233,17 +233,17 @@ volbar:set_gradient_colors({ beautiful.fg_widget,
 }) -- Enable caching
 vicious.cache(vicious.widgets.volume)
 -- Register widgets
-vicious.register(volbar,    vicious.widgets.volume,  "$1",  2, "Master")
-vicious.register(volwidget, vicious.widgets.volume, " $1%", 2, "Master")
+vicious.register(volbar,    vicious.widgets.volume,  "$1",  2, "PCM")
+vicious.register(volwidget, vicious.widgets.volume, " $1%", 2, "PCM")
 -- Register buttons
 volbar.widget:buttons(awful.util.table.join(
-    awful.button({ }, 1, function () awful.util.spawn("amixer set Master toggle >/dev/null") vicious.force({volbar, volwidget}) end),
-    awful.button({ }, 2, function () awful.util.spawn("amixer set Master toggle >/dev/null") vicious.force({volbar, volwidget}) end),
+    awful.button({ }, 1, function () awful.util.spawn("amixer set PCM toggle >/dev/null") vicious.force({volbar, volwidget}) end),
+    awful.button({ }, 2, function () awful.util.spawn("amixer set PCM toggle >/dev/null") vicious.force({volbar, volwidget}) end),
     awful.button({ }, 3, function () awful.util.spawn(terminal.." -e alsamixer") vicious.force({volbar, volwidget}) end),
-    awful.button({ }, 4, function () awful.util.spawn("amixer set Master 5%+ >/dev/null") vicious.force({volbar, volwidget}) end),
-    awful.button({ }, 5, function () awful.util.spawn("amixer set Master 5%- >/dev/null") vicious.force({volbar, volwidget}) end),
-    awful.button({ }, 6, function () awful.util.spawn("amixer set Master 5%- >/dev/null") vicious.force({volbar, volwidget}) end),
-    awful.button({ }, 7, function () awful.util.spawn("amixer set Master 5%+ >/dev/null") vicious.force({volbar, volwidget}) end)
+    awful.button({ }, 4, function () awful.util.spawn("amixer set PCM 5%+ >/dev/null") vicious.force({volbar, volwidget}) end),
+    awful.button({ }, 5, function () awful.util.spawn("amixer set PCM 5%- >/dev/null") vicious.force({volbar, volwidget}) end),
+    awful.button({ }, 6, function () awful.util.spawn("amixer set PCM 5%- >/dev/null") vicious.force({volbar, volwidget}) end),
+    awful.button({ }, 7, function () awful.util.spawn("amixer set PCM 5%+ >/dev/null") vicious.force({volbar, volwidget}) end)
 )) -- Register assigned buttons
 volwidget:buttons(volbar.widget:buttons())
 
