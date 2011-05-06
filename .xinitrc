@@ -9,8 +9,8 @@ numlockx on
 #pcmanfm --daemon-mode &
 #thunar --daemon &
 urxvtd -q -f -o
-#xscreensaver -log .xscreensaver.log -nosplash &
-#pidgin &
+xscreensaver -log .xscreensaver.log -nosplash &
+pidgin &
 
 ## jack and alsa to jack bridge
 #/home/archy/.jack_alsa.sh &
