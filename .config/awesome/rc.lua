@@ -40,18 +40,18 @@ altkey = "Mod1"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
 {
-    awful.layout.suit.tile.bottom,
-    -- awful.layout.suit.tile.top,
+    awful.layout.suit.floating,
     awful.layout.suit.tile,
-    -- awful.layout.suit.tile.left,
+    --awful.layout.suit.tile.left,
+    awful.layout.suit.tile.bottom,
+    --awful.layout.suit.tile.top,
     awful.layout.suit.fair,
     awful.layout.suit.fair.horizontal,
     awful.layout.suit.spiral,
     awful.layout.suit.spiral.dwindle,
     awful.layout.suit.max,
     -- awful.layout.suit.max.fullscreen,
-    -- awful.layout.suit.magnifier,
-    awful.layout.suit.floating
+    awful.layout.suit.magnifier
 }
 -- }}}
   mylayoutitems = {}
@@ -67,7 +67,7 @@ layouts =
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
+    tags[s] = awful.tag({ 1, 2, 3, 4 }, s, layouts[1])
     for t in ipairs(tags[s]) do
       awful.tag.setmwfact(0.75, tags[s][t])
     end
@@ -93,21 +93,21 @@ myawesomemenu = {
 }
 
 favoriteapps = {
-                 --{ "pcmanfm", "pcmanfm", freedesktop.utils.lookup_icon({ icon="system-file-manager" }) },
-                 --{ "chromium", "chromium", "/usr/share/icons/hicolor/16x16/apps/chromium.png" },
+                 { "pcmanfm", "pcmanfm", freedesktop.utils.lookup_icon({ icon="system-file-manager" }) },
+                 { "chromium", "chromium", "/usr/share/icons/hicolor/16x16/apps/chromium.png" },
                  { "firefox", "firefox", "/usr/share/icons/hicolor/16x16/apps/firefox.png" },
-                 --{ "ario", "ario", "/usr/share/icons/hicolor/16x16/apps/ario.png" },
-                 { "gbemol", "gbemol", "/usr/share/pixmaps/gbemol.png" },
+                 { "ario", "ario", "/usr/share/icons/hicolor/16x16/apps/ario.png" },
+                 --{ "gbemol", "gbemol", "/usr/share/pixmaps/gbemol.png" },
                  { "smplayer", "smplayer", "/usr/share/icons/hicolor/16x16/apps/smplayer.png" },
-                 { "gVim", "gvim", "/usr/share/pixmaps/gvim.png" },
-                 { "calc", "gcalctool", freedesktop.utils.lookup_icon({ icon="calc" }) },
-                 --{ "gcstar", "gcstar", "/usr/share/pixmaps/gcstar.png" },
-                 --{ "libreoffice", "soffice -writer", "/usr/share/icons/hicolor/16x16/apps/ooo-writer.png" },
-                 --{ "libreoffice -impress", "soffice -impress", "/usr/share/icons/hicolor/16x16/apps/ooo-impress.png" },
-                 --{ "libreoffice -calc", "soffice -calc", "/usr/share/icons/hicolor/16x16/apps/ooo-calc.png" },
-                 --{ "scrabble", "/home/archy/WordBiz/wordbiz", "/usr/share/icons/Tango/16x16/actions/format-text-bold.png" },
+                 --{ "gVim", "gvim", "/usr/share/pixmaps/gvim.png" },
+                 --{ "calc", "gcalctool", freedesktop.utils.lookup_icon({ icon="calc" }) },
+                 { "gcstar", "gcstar", "/usr/share/pixmaps/gcstar.png" },
+                 { "libreoffice", "soffice -writer", "/usr/share/icons/hicolor/16x16/apps/ooo-writer.png" },
+                 { "libreoffice -impress", "soffice -impress", "/usr/share/icons/hicolor/16x16/apps/ooo-impress.png" },
+                 { "libreoffice -calc", "soffice -calc", "/usr/share/icons/hicolor/16x16/apps/ooo-calc.png" },
+                 { "scrabble", "/home/archy/WordBiz/wordbiz", "/usr/share/icons/Tango/16x16/actions/format-text-bold.png" },
                  { "terminal", terminal, freedesktop.utils.lookup_icon({ icon="terminal" }) },
-                 --{ "mplayerTube", "/home/archy/mplayerTube.sh", "/usr/share/icons/Tango/16x16/mimetypes/video-x-generic.png" },
+                 { "mplayerTube", "/home/archy/mplayerTube.sh", "/usr/share/icons/Tango/16x16/mimetypes/video-x-generic.png" },
 }
 
 system_items = { { "shutdown", "sudo /sbin/halt", "/usr/share/icons/Tango/16x16/actions/system-shutdown.png" },
@@ -212,63 +212,6 @@ mytextclock:buttons(awful.util.table.join(
     awful.button({ }, 4, function() calendar:month(-1)  end))
 )
 
-
-
---[[
--- {{{ Cache these widgets
-vicious.cache(vicious.widgets.net)
---vicious.cache(vicious.widgets.bat)
---vicious.cache(vicious.widgets.wifi)
-vicious.cache(vicious.widgets.gmail)
--- }}}
-]]--
-
--- {{{ Volume level
-volicon = widget({ type = "imagebox" })
---volicon.image = image(beautiful.widget_vol)
--- Initialize widgets
-volbar    = awful.widget.progressbar()
-volwidget = widget({ type = "textbox" })
-volbar:set_vertical(true):set_ticks(true)
-volbar:set_height(12):set_width(8):set_ticks_size(2)
-volbar:set_background_color(beautiful.fg_off_widget)
-volbar:set_gradient_colors({ beautiful.fg_widget,
-   beautiful.fg_center_widget, beautiful.fg_end_widget
-}) -- Enable caching
-vicious.cache(vicious.widgets.volume)
--- Register widgets
-vicious.register(volbar,    vicious.widgets.volume,  "$1",  2, "Master")
-vicious.register(volwidget, vicious.widgets.volume, " $1%", 2, "Master")
--- Register buttons
-volbar.widget:buttons(awful.util.table.join(
-    awful.button({ }, 1, function () awful.util.spawn("amixer set Master toggle >/dev/null") vicious.force({volbar, volwidget}) end),
-    awful.button({ }, 2, function () awful.util.spawn("amixer set Master toggle >/dev/null") vicious.force({volbar, volwidget}) end),
-    awful.button({ }, 3, function () awful.util.spawn(terminal.." -e alsamixer") vicious.force({volbar, volwidget}) end),
-    awful.button({ }, 4, function () awful.util.spawn("amixer set Master 5%+ >/dev/null") vicious.force({volbar, volwidget}) end),
-    awful.button({ }, 5, function () awful.util.spawn("amixer set Master 5%- >/dev/null") vicious.force({volbar, volwidget}) end),
-    awful.button({ }, 6, function () awful.util.spawn("amixer set Master 5%- >/dev/null") vicious.force({volbar, volwidget}) end),
-    awful.button({ }, 7, function () awful.util.spawn("amixer set Master 5%+ >/dev/null") vicious.force({volbar, volwidget}) end)
-)) -- Register assigned buttons
-volwidget:buttons(volbar.widget:buttons())
-
--- Register widget
-vicious.register(volicon, vicious.widgets.volume, 
-      function (widget, args)
-          if args[1] == 0 or args[2] == "♩" then 
-            volicon.image=image(beautiful.widget_vol_mute)
-          elseif args[1] > 66 then
-            volicon.image=image(beautiful.widget_vol_hi)
-          elseif args[1] > 33 and args[1] <= 66 then
-            volicon.image=image(beautiful.widget_vol_mid)
-          else
-            volicon.image  = image(beautiful.widget_vol_low)
-          end
-          
-      end, 
-      2, "Master")
-volicon:buttons(volbar.widget:buttons())
--- }}}
-
 --{{{ MPD widget
 vicious.cache(vicious.widgets.mpd)
 mpdWidgetButtons = awful.util.table.join(
@@ -352,6 +295,7 @@ netwidgetup.width=30
 vicious.register(netwidgetup, vicious.widgets.net, '<span color="#7F9F7F">${eth0 up_kb}</span>', 3)
 -- }}}
 
+--[[
 -- {{{ CPU usage and temperature
 vicious.cache(vicious.widgets.cpu)
 cpuicon = widget({ type = "imagebox" })
@@ -418,6 +362,7 @@ membar:set_gradient_colors({ beautiful.fg_widget,
 }) -- Register widget
 vicious.register(membar, vicious.widgets.mem, "$1", 13)
 -- }}}
+]]--
 
 -- {{{ Pacman widget
 pacman_icon = widget({type = "imagebox", name = "pacman_icon" })
@@ -570,6 +515,7 @@ for s = 1, screen.count() do
            mytaglist[s],
            separator,
            --FIXME
+           --[[
            {
              quicklaunch[1],
              quicklaunch[2],
@@ -578,7 +524,7 @@ for s = 1, screen.count() do
              quicklaunch[5],
              quicklaunch[6],
              layout = quicklaunch["layout"]
-           },
+           },]]--
            --quicklaunch,
            separator,
            mypromptbox[s],
@@ -587,14 +533,14 @@ for s = 1, screen.count() do
        mylayoutbox[s], separator,
        pacman, pacman_icon, mytextclock, separator,
        (s == 1) and mysystray or nil,
-       volwidget,  volbar.widget, volicon, separator,
+       --volwidget,  volbar.widget, volicon, separator,
        --pacman, pacman_icon, separator,
        netwidgetup, myneticonup, netwidgetdown, myneticondown, separator,
-       membar.widget, memicon, separator,
+       --membar.widget, memicon, separator,
        --FIXME
        --cpus_widgets,
-       cpus_widgets[1], cpus_widgets[2], cpus_widgets[3], cpus_widgets[4],
-       cpugraph.widget, cpuicon, separator,
+       --cpus_widgets[1], cpus_widgets[2], cpus_widgets[3], cpus_widgets[4],
+       --cpugraph.widget, cpuicon, separator,
        --gmailwidget, separator,
        --[[mympdstatebacktext,]]mympdstateicon,mpdwidget,--[[mympdstatefronttext,]]separator,
        mytasklist[s],
@@ -631,7 +577,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "w", function () mymainmenu:show({keygrabber=true}) end),
 
     -- Lock Screen
-    awful.key({ modkey, "Control", altkey }, "Delete", function () awful.util.spawn("xscreensaver-command -lock") end),
+    -- awful.key({ modkey, "Control", altkey }, "Delete", function () awful.util.spawn("xscreensaver-command -lock") end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
@@ -778,10 +724,10 @@ awful.rules.rules = {
       properties = { floating = true, on_top = true } },
     { rule = { class = "Smplayer" },
       properties = { floating = true, on_top = true } },
-    { rule = { class = "Pidgin" },
-      properties = { floating = true, on_top = true } },
-    { rule = { class = "Pidgin",role="conversation" },
-      properties = { floating = true, focus = true } },
+    --{ rule = { class = "Pidgin" },
+    --  properties = { floating = true, on_top = true } },
+    --{ rule = { class = "Pidgin",role="conversation" },
+    --  properties = { floating = true, focus = true } },
       --properties = { floating = true } },
     { rule = { class = "pinentry" },
       properties = { floating = true } },
@@ -793,8 +739,8 @@ awful.rules.rules = {
       properties = { floating = true, ontop = true } },
     { rule = { role = "gimp-toolbox" },
       properties = { floating = true, ontop = true } },
-    { rule = { class = "Enemy Territory" },
-      properties = { floating = true, ontop = true, modal=true, focus=true }, callback = awful.placement.centered },
+    --{ rule = { class = "Enemy Territory" },
+    --  properties = { floating = true, ontop = true, modal=true, focus=true }, callback = awful.placement.centered },
     { rule = { class = "Qt4-ssh-askpass" },
       properties = { floating = true, ontop = true, modal=true, focus=true }, callback = awful.placement.centered },
     { rule = { class = "Firefox", role="Manager" },
