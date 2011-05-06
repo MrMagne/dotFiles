@@ -15,7 +15,7 @@ complete -cf sudo
 
 alias ls='ls --color=auto'
 alias diff='colordiff'
-alias make='colormake'
+#alias make='colormake'
 alias grep='grep --color=auto'
 alias r='fc -s'
 alias h='fc -l'
