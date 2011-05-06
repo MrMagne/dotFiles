@@ -40,18 +40,18 @@ altkey = "Mod1"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
 {
-    awful.layout.suit.floating,
-    awful.layout.suit.tile,
-    --awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
-    --awful.layout.suit.tile.top,
+    -- awful.layout.suit.tile.top,
+    awful.layout.suit.tile,
+    -- awful.layout.suit.tile.left,
     awful.layout.suit.fair,
     awful.layout.suit.fair.horizontal,
     awful.layout.suit.spiral,
     awful.layout.suit.spiral.dwindle,
     awful.layout.suit.max,
     -- awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier
+    -- awful.layout.suit.magnifier,
+    awful.layout.suit.floating
 }
 -- }}}
   mylayoutitems = {}
@@ -67,7 +67,7 @@ layouts =
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ 1, 2, 3, 4 }, s, layouts[1])
+    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
     for t in ipairs(tags[s]) do
       awful.tag.setmwfact(0.75, tags[s][t])
     end
@@ -99,14 +99,15 @@ favoriteapps = {
                  --{ "ario", "ario", "/usr/share/icons/hicolor/16x16/apps/ario.png" },
                  { "gbemol", "gbemol", "/usr/share/pixmaps/gbemol.png" },
                  { "smplayer", "smplayer", "/usr/share/icons/hicolor/16x16/apps/smplayer.png" },
-                 { "gcstar", "gcstar", "/usr/share/pixmaps/gcstar.png" },
-                 { "libreoffice", "soffice -writer", "/usr/share/icons/hicolor/16x16/apps/ooo-writer.png" },
-                 { "libreoffice -impress", "soffice -impress", "/usr/share/icons/hicolor/16x16/apps/ooo-impress.png" },
-                 { "libreoffice -calc", "soffice -calc", "/usr/share/icons/hicolor/16x16/apps/ooo-calc.png" },
-                 { "scrabble", "/home/archy/WordBiz/wordbiz", "/usr/share/icons/Tango/16x16/actions/format-text-bold.png" },
-                 { "firefox", "firefox", "/usr/share/icons/hicolor/16x16/apps/firefox.png" },
+                 { "gVim", "gvim", "/usr/share/pixmaps/gvim.png" },
+                 { "calc", "gcalctool", freedesktop.utils.lookup_icon({ icon="calc" }) },
+                 --{ "gcstar", "gcstar", "/usr/share/pixmaps/gcstar.png" },
+                 --{ "libreoffice", "soffice -writer", "/usr/share/icons/hicolor/16x16/apps/ooo-writer.png" },
+                 --{ "libreoffice -impress", "soffice -impress", "/usr/share/icons/hicolor/16x16/apps/ooo-impress.png" },
+                 --{ "libreoffice -calc", "soffice -calc", "/usr/share/icons/hicolor/16x16/apps/ooo-calc.png" },
+                 --{ "scrabble", "/home/archy/WordBiz/wordbiz", "/usr/share/icons/Tango/16x16/actions/format-text-bold.png" },
                  { "terminal", terminal, freedesktop.utils.lookup_icon({ icon="terminal" }) },
-                 { "mplayerTube", "/home/archy/mplayerTube.sh", "/usr/share/icons/Tango/16x16/mimetypes/video-x-generic.png" },
+                 --{ "mplayerTube", "/home/archy/mplayerTube.sh", "/usr/share/icons/Tango/16x16/mimetypes/video-x-generic.png" },
 }
 
 system_items = { { "shutdown", "sudo /sbin/halt", "/usr/share/icons/Tango/16x16/actions/system-shutdown.png" },
@@ -280,16 +281,10 @@ mpdWidgetButtons = awful.util.table.join(
     awful.button({ }, 7, function () awful.util.spawn("mpc next") vicious.force({ mpdwidget}) end)
 )
 
-mymusicicon       = widget({ type = "imagebox", name = "mymusicicon" })
-mymusicicon.image = image(beautiful.widget_mpd)
-mymusicicon:buttons(mpdWidgetButtons)
-
 --mympdstatefronttext = widget({ type = "textbox" })
 --mympdstatebacktext  = widget({ type = "textbox" })
 --mympdstatefronttext.text = ' <span color="#7f9f7f">[</span>'
 --mympdstatebacktext.text  = '<span color="#7f9f7f">]</span>'
-mympdstateicon    = widget({ type = "imagebox", name = "mympdstateicon" })
-mympdstateicon:buttons(mpdWidgetButtons)
 
 -- Initialize widget
 mpdwidget = widget({ type = "textbox" })
@@ -357,7 +352,6 @@ netwidgetup.width=30
 vicious.register(netwidgetup, vicious.widgets.net, '<span color="#7F9F7F">${eth0 up_kb}</span>', 3)
 -- }}}
 
---[[
 -- {{{ CPU usage and temperature
 vicious.cache(vicious.widgets.cpu)
 cpuicon = widget({ type = "imagebox" })
@@ -637,7 +631,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "w", function () mymainmenu:show({keygrabber=true}) end),
 
     -- Lock Screen
-    -- awful.key({ modkey, "Control", altkey }, "Delete", function () awful.util.spawn("xscreensaver-command -lock") end),
+    awful.key({ modkey, "Control", altkey }, "Delete", function () awful.util.spawn("xscreensaver-command -lock") end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
