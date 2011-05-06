@@ -9,8 +9,11 @@ numlockx on
 #pcmanfm --daemon-mode &
 #thunar --daemon &
 urxvtd -q -f -o
-xscreensaver -log .xscreensaver.log -nosplash &
-pidgin &
+#xscreensaver -log .xscreensaver.log -nosplash &
+#pidgin &
+
+## jack and alsa to jack bridge
+#/home/archy/.jack_alsa.sh &
 
 #use white appearance for openoffice/libreoffice
 export SAL_USE_VCLPLUGIN=gen
@@ -24,5 +27,7 @@ eval $(ssh-agent)
 exec ck-launch-session dbus-launch --sh-syntax --exit-with-session awesome
 #exec awesome
 ########################################
+#killall jackd
+
 killall urxvtd
 
