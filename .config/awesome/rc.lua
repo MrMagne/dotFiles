@@ -11,10 +11,6 @@ require("vicious")
 -- Dynamic tagging library
 -- require("shifty")
 
--- require("obvious.volume_alsa") -- Load the module
--- obvious.volume_alsa.setchannel("Master") -- Configure the module
--- obvious.volume_alsa() -- Add this to your widgets list 
-
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
 --beautiful.init("/usr/share/awesome/themes/default/theme.lua")
@@ -103,11 +99,12 @@ favoriteapps = {
                  { "gVim", "gvim", "/usr/share/pixmaps/gvim.png" },
                  { "calc", "gcalctool", freedesktop.utils.lookup_icon({ icon="calc" }) },
                  --{ "gcstar", "gcstar", "/usr/share/pixmaps/gcstar.png" },
-                 --{ "oo-writer", "soffice -writer", "/usr/share/icons/hicolor/16x16/apps/writer.png" },
-                 --{ "oo-impress", "soffice -impress", "/usr/share/icons/hicolor/16x16/apps/impress.png" },
-                 --{ "oo-calc", "soffice -calc", "/usr/share/icons/hicolor/16x16/apps/ooocalc.png" },
+                 --{ "libreoffice", "soffice -writer", "/usr/share/icons/hicolor/16x16/apps/ooo-writer.png" },
+                 --{ "libreoffice -impress", "soffice -impress", "/usr/share/icons/hicolor/16x16/apps/ooo-impress.png" },
+                 --{ "libreoffice -calc", "soffice -calc", "/usr/share/icons/hicolor/16x16/apps/ooo-calc.png" },
                  --{ "scrabble", "/home/archy/WordBiz/wordbiz", "/usr/share/icons/Tango/16x16/actions/format-text-bold.png" },
                  { "terminal", terminal, freedesktop.utils.lookup_icon({ icon="terminal" }) },
+                 --{ "mplayerTube", "/home/archy/mplayerTube.sh", "/usr/share/icons/Tango/16x16/mimetypes/video-x-generic.png" },
 }
 
 system_items = { { "shutdown", "sudo /sbin/halt", "/usr/share/icons/Tango/16x16/actions/system-shutdown.png" },
@@ -447,7 +444,6 @@ pacman_buttons = awful.util.table.join(
 pacman:buttons(pacman_buttons)
 pacman_icon:buttons(pacman_buttons)
 -- }}}
-
 
 -- Create a systray
 mysystray = widget({ type = "systray" })

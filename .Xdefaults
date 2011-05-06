@@ -45,3 +45,7 @@ URxvt*color14:          #a1cdcd
 ! White
 URxvt*color7:           #BBBBBB
 URxvt*color15:          #EEEEEF
+
+Xft.lcdfilter:  lcddefault
+Xft.hintstyle:  hintslight
+
