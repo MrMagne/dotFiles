@@ -1,9 +1,7 @@
-
 # Check for an interactive session
 [ -z "$PS1" ] && return
 
 export PATH=~/bin:$PATH
-
 export HISTCONTROL=ignoreboth
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -13,7 +11,6 @@ export HISTSIZE=10000
 
 export EDITOR=vim
 complete -cf sudo
-#alias sudo='sudo -E'
 
 alias ls='ls --color=auto'
 alias diff='colordiff'
