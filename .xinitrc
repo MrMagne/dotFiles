@@ -18,7 +18,6 @@ urxvtd -q -f -o
 #use white appearance for openoffice/libreoffice
 export SAL_USE_VCLPLUGIN=gen
 #dbus-launch --sh-syntax --exit-with-session thunar --daemon &
-#thunar --daemon &
 ########## awesome #####################
 #export $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh)
 eval $(ssh-agent)

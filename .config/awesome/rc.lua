@@ -11,10 +11,6 @@ require("vicious")
 -- Dynamic tagging library
 -- require("shifty")
 
--- require("obvious.volume_alsa") -- Load the module
--- obvious.volume_alsa.setchannel("Master") -- Configure the module
--- obvious.volume_alsa() -- Add this to your widgets list 
-
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
 --beautiful.init("/usr/share/awesome/themes/default/theme.lua")
