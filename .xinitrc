@@ -4,8 +4,6 @@
 #
 # Executed by startx (run your window manager from here)
 
-numlockx on
-
 #pcmanfm --daemon-mode &
 #thunar --daemon &
 urxvtd -q -f -o
