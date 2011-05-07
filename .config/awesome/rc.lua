@@ -521,7 +521,7 @@ for s = 1, screen.count() do
              quicklaunch[6],
              layout = quicklaunch["layout"]
            },]]--
-           --quicklaunch,
+           quicklaunch,
            separator,
            mypromptbox[s],
            layout = awful.widget.layout.horizontal.leftright

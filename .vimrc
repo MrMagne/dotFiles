@@ -8,19 +8,19 @@ nnoremap K :Man <cword><CR>
 set undofile
 set undodir=~/.vim/undofiles
 
-source ${VIM}/vimfiles/macros/clewn_mappings.vim
-let s:term = "urxvtc"
-function! ClewnToggle()
-  if(has("netbeans_enabled")) 
-    nbclose
-  else
-    exe "! ".s:term." -e clewn -x \"\""
-    redraw!
-    nbstart :localhost:3219:
-  endif
-endfunction  
-
-map <F6> :call ClewnToggle()<CR>
+"source ${VIM}/vimfiles/macros/clewn_mappings.vim
+"let s:term = "urxvtc"
+"function! ClewnToggle()
+"  if(has("netbeans_enabled")) 
+"    nbclose
+"  else
+"    exe "! ".s:term." -e clewn -x \"\""
+"    redraw!
+"    nbstart :localhost:3219:
+"  endif
+"endfunction  
+"
+"map <F6> :call ClewnToggle()<CR>
 
 "Tlist settings
 let Tlist_Compact_Format = 1
