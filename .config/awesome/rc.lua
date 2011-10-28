@@ -775,9 +775,9 @@ awful.rules.rules = {
     { rule = { class = "Smplayer" },
       properties = { floating = true, on_top = true } },
     { rule = { class = "Pidgin" },
-      properties = { floating = true, on_top = true } },
+      properties = { floating = true, focus = false } },
     { rule = { class = "Pidgin",role="conversation" },
-      properties = { floating = true, focus = true } },
+      properties = { floating = true, focus = false } },
       --properties = { floating = true } },
     { rule = { class = "pinentry" },
       properties = { floating = true } },
@@ -834,3 +834,6 @@ end)
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+--
+os.execute("gnome-keyring-daemon")
+os.execute("/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &")

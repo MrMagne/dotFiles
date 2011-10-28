@@ -1,7 +1,8 @@
 # Check for an interactive session
 [ -z "$PS1" ] && return
 
-export PATH=~/bin:$PATH
+
+export PATH=~/bin:/usr/lib/colorgcc/bin:$PATH
 export HISTCONTROL=ignoreboth
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -14,7 +15,7 @@ complete -cf sudo
 
 alias ls='ls --color=auto'
 alias diff='colordiff'
-alias make='colormake'
+#alias make='colormake'
 alias grep='grep --color=auto'
 alias r='fc -s'
 alias h='fc -l'

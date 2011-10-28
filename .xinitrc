@@ -20,6 +20,7 @@ export SAL_USE_VCLPLUGIN=gen
 #export $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh)
 eval $(ssh-agent)
 (sleep 2 && ~/bin/mount_sshfs) &
+#/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 #exec ck-launch-session awesome
 exec ck-launch-session dbus-launch --sh-syntax --exit-with-session awesome
 #exec awesome
