@@ -31,8 +31,12 @@ let Tlist_Show_Menu = 1
 let Tlist_Inc_Winwidth = 0
 :noremap <F3> :Tlist<CR> 
 
+let g:vimwiki_menu = 'Plugin.Vimwiki' 
+
 "visual bell
 set vb
+
+set mousefocus
 
 "autocmd FileType c set omnifunc=ccomplete#Complete
 
@@ -40,6 +44,12 @@ set vb
 autocmd FileType tex setlocal textwidth=80
 autocmd FileType tex setlocal spell
 autocmd FileType tex setlocal spelllang=fr
+autocmd FileType plaintex setlocal textwidth=80
+autocmd FileType plaintex setlocal spell
+autocmd FileType plaintex setlocal spelllang=fr
+autocmd FileType vimwiki setlocal textwidth=80
+autocmd FileType vimwiki setlocal spell
+autocmd FileType vimwiki setlocal spelllang=fr
 
 "NERDTree
 :noremap <F4> :NERDTreeToggle<CR> 
@@ -49,6 +59,7 @@ set autoindent
 set smartindent
 set shiftwidth=2
 set softtabstop=2 
+set tabstop=2 
 set expandtab
 syn on
 set incsearch
@@ -72,8 +83,8 @@ let g:load_doxygen_syntax=1
 ":noremap <F2> :call SetHeight()<CR>
 "autocmd GUIEnter * call SetHeight()
 
-set foldmethod=syntax
-autocmd BufEnter * exe "normal zR"
+"set foldmethod=syntax
+"autocmd BufEnter * exe "normal zR"
 "set nofoldenable
 
 set tags=.tags,./.tags,~/.tags,./tags,./TAGS,tags,TAGS
