@@ -340,13 +340,13 @@ myneticondown.image = image(beautiful.widget_netdown)
 netwidgetdown = widget({ type = "textbox" })
 netwidgetdown.width=30
 -- Register widget
-vicious.register(netwidgetdown, vicious.widgets.net, '<span color="#CC9393">${eth0 down_kb}</span> ', 3)
+vicious.register(netwidgetdown, vicious.widgets.net, '<span color="#CC9393">${wlan0 down_kb}</span> ', 3)
 
 -- Initialize widget
 netwidgetup = widget({ type = "textbox" })
 netwidgetup.width=30
 -- Register widget
-vicious.register(netwidgetup, vicious.widgets.net, '<span color="#7F9F7F">${eth0 up_kb}</span>', 3)
+vicious.register(netwidgetup, vicious.widgets.net, '<span color="#7F9F7F">${wlan0 up_kb}</span>', 3)
 -- }}}
 
 -- {{{ CPU usage and temperature
@@ -392,12 +392,12 @@ end
 -- }}}
 
 -- {{{ Battery state
---baticon = widget({ type = "imagebox" })
---baticon.image = image(beautiful.widget_bat)
+baticon = widget({ type = "imagebox" })
+baticon.image = image(beautiful.widget_bat)
 ---- Initialize widget
---batwidget = widget({ type = "textbox" })
+batwidget = widget({ type = "textbox" })
 ---- Register widget
---vicious.register(batwidget, vicious.widgets.bat, "$1$2%", 61, "BAT0")
+vicious.register(batwidget, vicious.widgets.bat, "$1$2%", 61, "BAT0")
 -- }}}
 
 -- {{{ Memory usage
@@ -587,6 +587,7 @@ for s = 1, screen.count() do
        volwidget,  volbar.widget, volicon, separator,
        --pacman, pacman_icon, separator,
        netwidgetup, myneticonup, netwidgetdown, myneticondown, separator,
+       batwidget,baticon,separator,
        membar.widget, memicon, separator,
        --FIXME
        --cpus_widgets,
