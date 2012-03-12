@@ -118,7 +118,7 @@ favoriteapps = {
                  --{ "chromium", "chromium", "/usr/share/icons/hicolor/16x16/apps/chromium.png" },
                  { "firefox", "firefox", "/usr/share/icons/hicolor/16x16/apps/firefox.png" },
                  --{ "ario", "ario", "/usr/share/icons/hicolor/16x16/apps/ario.png" },
-                 { "gbemol", "gbemol", "/usr/share/pixmaps/gbemol.png" },
+                 --{ "gbemol", "gbemol", "/usr/share/pixmaps/gbemol.png" },
                  { "smplayer", "smplayer", "/usr/share/icons/hicolor/16x16/apps/smplayer.png" },
                  { "gVim", "gvim", "/usr/share/pixmaps/gvim.png" },
                  { "calc", "gcalctool", freedesktop.utils.lookup_icon({ icon="calc" }) },
