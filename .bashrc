@@ -1,6 +1,7 @@
 # Check for an interactive session
 [ -z "$PS1" ] && return
 
+. /etc/profile
 
 export PATH=~/bin:/usr/lib/colorgcc/bin:$PATH
 export HISTCONTROL=ignoreboth
@@ -22,6 +23,6 @@ alias h='fc -l'
 
 #PS1='[\u@\h \w]($?)\$ '
 
-PROMPT_COMMAND='RET=$?;'
+PROMPT_COMMAND="export RET='$?'; ${PROMPT_COMMAND}"
 RET_VALUE='$(if [[ $RET = 0 ]]; then echo "\[\e[1;32m\]"; else echo "\[\e[1;31m\]"; fi)'
-PS1="${RET_VALUE}[\[\e[0;37m\]\u@\h \w${RET_VALUE}]\\\$\[\e[0;37m\] "
+PS1="${RET_VALUE}[\[\e[0;37m\]\u@\h \w ${RET_VALUE}]\\\$\[\e[0;37m\] "
