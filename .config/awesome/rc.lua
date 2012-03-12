@@ -113,6 +113,7 @@ myawesomemenu = {
 }
 
 favoriteapps = {
+                 { "thunar", "thunar", freedesktop.utils.lookup_icon({ icon="system-file-manager" }) },
                  --{ "pcmanfm", "pcmanfm", freedesktop.utils.lookup_icon({ icon="system-file-manager" }) },
                  --{ "chromium", "chromium", "/usr/share/icons/hicolor/16x16/apps/chromium.png" },
                  { "firefox", "firefox", "/usr/share/icons/hicolor/16x16/apps/firefox.png" },
@@ -131,7 +132,9 @@ favoriteapps = {
 }
 
 system_items = { { "shutdown", "sudo /sbin/halt", "/usr/share/icons/Tango/16x16/actions/system-shutdown.png" },
-                 { "reboot", "sudo /sbin/reboot", "/usr/share/icons/Tango/16x16/actions/reload3.png" }
+                 { "reboot", "sudo /sbin/reboot", "/usr/share/icons/Tango/16x16/actions/reload3.png" },
+                 { "suspend", "sudo /usr/sbin/pm-suspend", "/usr/share/icons/Tango/16x16/actions/player_pause.png" },
+                 { "hibernate", "sudo /usr/sbin/pm-hibernate", "/usr/share/icons/Tango/16x16/actions/player_stop.png" }
 }
 --menu_separator = { "", height="1" }
 
