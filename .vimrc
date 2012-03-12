@@ -1,7 +1,10 @@
 " set runtimepath=~/.vim,/var/lib/vim/addons,/usr/share/vim/vimfiles,/usr/share/vim/vim71,/usr/share/vim/vimfiles/after,/var/lib/vim/addons/after,~/.vim/after,/usr/share/vim-scripts/plugin,/usr/share/vim-scripts/after,/usr/share/vim-scripts/autoload,/usr/share/vim-scripts/colors,/usr/share/vim-scripts/doc,/usr/share/vim-scripts/ftplugin,/usr/share/vim-scripts/indent,/usr/share/vim-scripts/macros,/usr/share/vim-scripts/sokoban-levels,/usr/share/vim-scripts/syntax,/usr/share/vim-scripts/vimplate-templates
 
 set nocp
-filetype plugin on
+filetype plugin indent on
+set grepprg=grep\ -nH\ $*
+let g:tex_flavor = "latex"
+
 "helptags ~/.vim/doc
 runtime! ftplugin/man.vim
 nnoremap K :Man <cword><CR>

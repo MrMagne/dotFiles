@@ -10,6 +10,30 @@ require("naughty")
 require("vicious")
 -- Dynamic tagging library
 -- require("shifty")
+-- {{{ Error handling
+-- Check if awesome encountered an error during startup and fell back to
+-- another config (This code will only ever execute for the fallback config)
+if awesome.startup_errors then
+    naughty.notify({ preset = naughty.config.presets.critical,
+                     title = "Oops, there were errors during startup!",
+                     text = awesome.startup_errors })
+end
+
+-- Handle runtime errors after startup
+do
+    local in_error = false
+    awesome.add_signal("debug::error", function (err)
+        -- Make sure we don't go into an endless error loop
+        if in_error then return end
+        in_error = true
+
+        naughty.notify({ preset = naughty.config.presets.critical,
+                         title = "Oops, an error happened!",
+                         text = err })
+        in_error = false
+    end)
+end
+-- }}}
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
@@ -89,6 +113,7 @@ myawesomemenu = {
 }
 
 favoriteapps = {
+                 { "thunar", "thunar", freedesktop.utils.lookup_icon({ icon="system-file-manager" }) },
                  --{ "pcmanfm", "pcmanfm", freedesktop.utils.lookup_icon({ icon="system-file-manager" }) },
                  --{ "chromium", "chromium", "/usr/share/icons/hicolor/16x16/apps/chromium.png" },
                  { "firefox", "firefox", "/usr/share/icons/hicolor/16x16/apps/firefox.png" },
@@ -107,7 +132,9 @@ favoriteapps = {
 }
 
 system_items = { { "shutdown", "sudo /sbin/halt", "/usr/share/icons/Tango/16x16/actions/system-shutdown.png" },
-                 { "reboot", "sudo /sbin/reboot", "/usr/share/icons/Tango/16x16/actions/reload3.png" }
+                 { "reboot", "sudo /sbin/reboot", "/usr/share/icons/Tango/16x16/actions/reload3.png" },
+                 { "suspend", "sudo /usr/sbin/pm-suspend", "/usr/share/icons/Tango/16x16/actions/player_pause.png" },
+                 { "hibernate", "sudo /usr/sbin/pm-hibernate", "/usr/share/icons/Tango/16x16/actions/player_stop.png" }
 }
 --menu_separator = { "", height="1" }
 
@@ -667,6 +694,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
+    awful.key({ modkey, "Control" }, "n", awful.client.restore),
+
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
 
@@ -688,7 +717,12 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
     awful.key({ modkey,           }, "s",      function (c) c.sticky = not c.sticky          end),
-    awful.key({ modkey,           }, "n",      function (c) c.minimized = not c.minimized    end),
+    awful.key({ modkey,           }, "n",
+        function (c)
+            -- The client currently has the input focus, so it cannot be
+            -- minimized, since minimized clients can't have the focus.
+            c.minimized = true
+        end),
     awful.key({ modkey,           }, "m",
         function (c)
             c.maximized_horizontal = not c.maximized_horizontal
