@@ -13,7 +13,7 @@ URxvt.borderless:       false
 URxvt*scrollTtyOutput:      false
 URxvt*scrollWithBuffer:     true
 URxvt*scrollTtyKeypress:    true
-urxvt*saveLines:            10000
+URxvt*saveLines:            10000
 
 ! Black
 URxvt*color0:           #262626
@@ -49,4 +49,5 @@ URxvt*color15:          #EEEEEF
 
 Xft.lcdfilter:  lcddefault
 Xft.hintstyle:  hintslight
+Xft.hinting: true
 

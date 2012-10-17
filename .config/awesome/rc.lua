@@ -7,7 +7,7 @@ require("beautiful")
 -- Notification library
 require("naughty")
 -- Widget library
-require("vicious")
+vicious = require("vicious")
 -- Dynamic tagging library
 -- require("shifty")
 -- {{{ Error handling
@@ -99,7 +99,7 @@ end
   -- applications menu
   require('freedesktop.utils')
   freedesktop.utils.terminal = terminal  -- default: "xterm"
-  freedesktop.utils.icon_theme = 'Tango' -- look inside /usr/share/icons/, default: nil (don't use icon theme)
+  freedesktop.utils.icon_theme = 'gnome' -- look inside /usr/share/icons/, default: nil (don't use icon theme)
   require('freedesktop.menu')
   --require("debian.menu")
 
@@ -126,15 +126,15 @@ favoriteapps = {
                  --{ "libreoffice", "soffice -writer", "/usr/share/icons/hicolor/16x16/apps/ooo-writer.png" },
                  --{ "libreoffice -impress", "soffice -impress", "/usr/share/icons/hicolor/16x16/apps/ooo-impress.png" },
                  --{ "libreoffice -calc", "soffice -calc", "/usr/share/icons/hicolor/16x16/apps/ooo-calc.png" },
-                 --{ "scrabble", "/home/archy/WordBiz/wordbiz", "/usr/share/icons/Tango/16x16/actions/format-text-bold.png" },
+                 --{ "scrabble", "/home/archy/WordBiz/wordbiz", "/usr/share/icons/gnome/16x16/actions/format-text-bold.png" },
                  { "terminal", terminal, freedesktop.utils.lookup_icon({ icon="terminal" }) },
-                 --{ "mplayerTube", "/home/archy/mplayerTube.sh", "/usr/share/icons/Tango/16x16/mimetypes/video-x-generic.png" },
+                 --{ "mplayerTube", "/home/archy/mplayerTube.sh", "/usr/share/icons/gnome/16x16/mimetypes/video-x-generic.png" },
 }
 
-system_items = { { "shutdown", "sudo /sbin/halt", "/usr/share/icons/Tango/16x16/actions/system-shutdown.png" },
-                 { "reboot", "sudo /sbin/reboot", "/usr/share/icons/Tango/16x16/actions/reload3.png" },
-                 { "suspend", "sudo /usr/sbin/pm-suspend", "/usr/share/icons/Tango/16x16/actions/player_pause.png" },
-                 { "hibernate", "sudo /usr/sbin/pm-hibernate", "/usr/share/icons/Tango/16x16/actions/player_stop.png" }
+system_items = { { "shutdown", "sudo /sbin/halt", "/usr/share/icons/gnome/16x16/actions/system-shutdown.png" },
+                 { "reboot", "sudo /sbin/reboot", "/usr/share/icons/gnome/16x16/actions/reload3.png" },
+                 { "suspend", "sudo /usr/sbin/pm-suspend", "/usr/share/icons/gnome/16x16/actions/player_pause.png" },
+                 { "hibernate", "sudo /usr/sbin/pm-hibernate", "/usr/share/icons/gnome/16x16/actions/player_stop.png" }
 }
 --menu_separator = { "", height="1" }
 
@@ -654,7 +654,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "w", function () mymainmenu:show({keygrabber=true}) end),
 
     -- Lock Screen
-    awful.key({ modkey, "Control", altkey }, "Delete", function () awful.util.spawn("xscreensaver-command -lock") end),
+    awful.key({ modkey, "Control", altkey }, "Delete", function () awful.util.spawn(
+      "i3lock -i "..os.getenv("HOME").."/wallpapers/solarflairnbw_3360x1050.png") end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
@@ -682,6 +683,9 @@ globalkeys = awful.util.table.join(
 
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
+    -- awful.key({ modkey,           }, "Return", function ()
+    --   if awful.rules.match(client, {class = "URxvt"}) then awful.util.spawn(terminal) 
+    -- end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
@@ -825,6 +829,8 @@ awful.rules.rules = {
       properties = { floating = true, ontop = true } },
     { rule = { class = "Enemy Territory" },
       properties = { floating = true, ontop = true, modal=true, focus=true }, callback = awful.placement.centered },
+    { rule = { class = "Plugin-container" },
+      properties = { floating = true, ontop = true, fullscreen=true, focus=true }, callback = awful.placement.centered },
     { rule = { class = "Qt4-ssh-askpass" },
       properties = { floating = true, ontop = true, modal=true, focus=true }, callback = awful.placement.centered },
     { rule = { class = "Firefox", role="Manager" },
@@ -869,5 +875,8 @@ client.add_signal("focus", function(c) c.border_color = beautiful.border_focus e
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 --
-os.execute("gnome-keyring-daemon")
-os.execute("/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &")
+-- os.execute("gnome-keyring-daemon")
+-- os.execute("/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &")
+os.execute("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &")
+-- os.execute("gnome-keyring-daemon -r --components=pkcs11,secrets,ssh,gpg,login")
+-- os.execute("gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg,login")

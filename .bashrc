@@ -11,6 +11,9 @@ shopt -s histappend
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 export HISTSIZE=10000
 
+# enables ** wildcard for recursive globbing
+shopt -s globstar
+
 export EDITOR=vim
 complete -cf sudo
 
