@@ -477,16 +477,16 @@ vicious.register(membar, vicious.widgets.mem, "$1", 13)
 -- {{{ Pacman widget
 pacman_icon = wibox.widget.imagebox()
 pacman_icon:set_image(beautiful.widget_pacman)
+pacman_box = wibox.layout.fixed.horizontal()
 pacman = wibox.widget.textbox()
 --vicious.register(pacman, vicious.widgets.pkg, "$1", 300, "Arch")
 vicious.register(pacman, vicious.widgets.pkg, 
   function(widget,args) 
     if (args[1]==0) then
-      pacman.visible = false
-      pacman_icon.visible = false
+      pacman_box:reset()
     else
-      pacman.visible = true
-      pacman_icon.visible = true
+      pacman_box:add(pacman)
+      pacman_box:add(pacman_icon)
     end
     return args[1] 
   end, 300, "Arch")
@@ -625,10 +625,9 @@ for s = 1, screen.count() do
     right_layout:add(volbar)
     right_layout:add(volwidget)
     if s == 1 then right_layout:add(wibox.widget.systray()) end
-    right_layout:add(mytextclock)
-    right_layout:add(pacman_icon)
-    right_layout:add(pacman)
     right_layout:add(separator)
+    right_layout:add(mytextclock)
+    right_layout:add(pacman_box)
     right_layout:add(mylayoutbox[s])
 
     -- Now bring it all together (with the tasklist in the middle)
