@@ -1,5 +1,17 @@
 " set runtimepath=~/.vim,/var/lib/vim/addons,/usr/share/vim/vimfiles,/usr/share/vim/vim71,/usr/share/vim/vimfiles/after,/var/lib/vim/addons/after,~/.vim/after,/usr/share/vim-scripts/plugin,/usr/share/vim-scripts/after,/usr/share/vim-scripts/autoload,/usr/share/vim-scripts/colors,/usr/share/vim-scripts/doc,/usr/share/vim-scripts/ftplugin,/usr/share/vim-scripts/indent,/usr/share/vim-scripts/macros,/usr/share/vim-scripts/sokoban-levels,/usr/share/vim-scripts/syntax,/usr/share/vim-scripts/vimplate-templates
 
+fun SetupVAM()
+  let plugin_root_dir = expand('$HOME') . '/.vim/vim-addons'
+  let &rtp.=(empty(&rtp)?'':',').plugin_root_dir.'/vim-addon-manager'
+  " let g:vim_addon_manager = { your config here see "commented version" example and help
+  if !isdirectory(plugin_root_dir.'/vim-addon-manager/autoload')
+    execute '!git clone --depth=1 git://github.com/MarcWeber/vim-addon-manager '
+          \       shellescape(plugin_root_dir.'/vim-addon-manager', 1)
+  endif
+  call vam#ActivateAddons(['github:oblitum/clang_complete'], {'auto_install' : 0})
+endfun
+call SetupVAM()
+
 set nocp
 set cino=N-s,(0,W4,g0
 filetype plugin indent on
@@ -28,13 +40,18 @@ endfunction
 map <F6> :call ClewnToggle()<CR>
 
 "Tlist settings
-let Tlist_Compact_Format = 1
-let Tlist_Use_Right_Window=1
-let Tlist_File_Fold_Auto_Close = 1
-let Tlist_Show_Menu = 1
-"let Tlist_Auto_Open = 1
-let Tlist_Inc_Winwidth = 0
-:noremap <F3> :Tlist<CR> 
+"let Tlist_Compact_Format = 1
+"let Tlist_Use_Right_Window=1
+"let Tlist_File_Fold_Auto_Close = 1
+"let Tlist_Show_Menu = 1
+""let Tlist_Auto_Open = 1
+"let Tlist_Inc_Winwidth = 0
+":noremap <F3> :Tlist<CR> 
+
+let g:tagbar_autoclose = 1
+let g:tagbar_autofocus = 1
+let g:tagbar_compact = 1
+noremap <F3> :TagbarToggle<CR> 
 
 let g:vimwiki_menu = 'Plugin.Vimwiki' 
 
@@ -59,8 +76,8 @@ autocmd FileType vimwiki setlocal spelllang=fr
 
 "NERDTree
 let NERDTreeMouseMode=2
-:noremap <F4> :NERDTreeToggle<CR> 
-:noremap <S-F4> :NERDTreeFind<CR>
+noremap <F4> :NERDTreeToggle<CR> 
+noremap <S-F4> :NERDTreeFind<CR>
 
 "alternate
 let g:alternateNoDefaultAlternate=1
@@ -79,7 +96,6 @@ colo desert
 highlight Pmenu guibg=black
 "doxygen color tweak
 hi SpecialComment guifg=SlateBlue
-
 "doxygen syntax highlighting
 let g:load_doxygen_syntax=1
 
@@ -92,6 +108,7 @@ let g:load_doxygen_syntax=1
 ":noremap <F2> :call SetHeight()<CR>
 "autocmd GUIEnter * call SetHeight()
 
+let xml_syntax_folding=1 
 set foldmethod=syntax
 autocmd BufRead * exe "normal zR"
 "set nofoldenable
@@ -104,9 +121,12 @@ autocmd BufRead * exe "normal zR"
 "let OmniCpp_MayCompleteDot = 0
 "let OmniCpp_MayCompleteArrow = 0
 "let OmniCpp_MayCompleteScope = 0
-let clang_library_path='/usr/lib/llvm'
+let clang_library_path='/usr/lib'
 let clang_complete_auto=0
 set completeopt=menu,longest
+
+nnoremap <silent> <Leader>f :FufFile<CR>
+"nnoremap <silent> <Leader>o :CommandT<CR>
 
 "close preview tags window
 "autocmd CursorMovedI * if pumvisible() == 0|pclose|endif

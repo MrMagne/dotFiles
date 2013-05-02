@@ -3,6 +3,9 @@
 
 . /etc/profile
 
+#Screws up bash forward-i-search with Ctrl-S
+stty -ixon
+
 export PATH=~/bin:/usr/lib/colorgcc/bin:$PATH
 export HISTCONTROL=ignoreboth
 # append to the history file, don't overwrite it
@@ -17,6 +20,7 @@ shopt -s globstar
 export EDITOR=vim
 complete -cf sudo
 
+#alias j=autojump
 alias ls='ls --color=auto'
 alias diff='colordiff'
 #alias make='colormake'
