@@ -479,14 +479,19 @@ pacman_icon = wibox.widget.imagebox()
 pacman_icon:set_image(beautiful.widget_pacman)
 pacman_box = wibox.layout.fixed.horizontal()
 pacman = wibox.widget.textbox()
+pacman_visible = false
 --vicious.register(pacman, vicious.widgets.pkg, "$1", 300, "Arch")
 vicious.register(pacman, vicious.widgets.pkg, 
   function(widget,args) 
     if (args[1]==0) then
       pacman_box:reset()
+      pacman_visible = false
     else
-      pacman_box:add(pacman)
-      pacman_box:add(pacman_icon)
+      if not pacman_visible then
+        pacman_box:add(pacman)
+        pacman_box:add(pacman_icon)
+        pacman_visible = true
+      end
     end
     return args[1] 
   end, 300, "Arch")
@@ -627,6 +632,7 @@ for s = 1, screen.count() do
     if s == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(separator)
     right_layout:add(mytextclock)
+    right_layout:add(separator)
     right_layout:add(pacman_box)
     right_layout:add(mylayoutbox[s])
 
