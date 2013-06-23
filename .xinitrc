@@ -7,7 +7,7 @@
 #pcmanfm --daemon-mode &
 #thunar --daemon &
 urxvtd -q -f -o
-xscreensaver -log .xscreensaver.log -nosplash &
+#xscreensaver -log .xscreensaver.log -nosplash &
 #pidgin &
 
 ## jack and alsa to jack bridge
