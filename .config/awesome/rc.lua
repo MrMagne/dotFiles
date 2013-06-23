@@ -869,6 +869,7 @@ awful.rules.rules = {
       properties = { focus=false }, callback = awful.client.setslave },
     { rule = { class = "URxvt" },
       callback = awful.client.setslave },
+    { rule = { name="Crack Attack!"}, properties = { floating=true}},
 
     -- Set Firefox to always map on tags number 2 of screen 1.
     -- { rule = { class = "Firefox" },

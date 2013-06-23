@@ -8,7 +8,7 @@ fun SetupVAM()
     execute '!git clone --depth=1 git://github.com/MarcWeber/vim-addon-manager '
           \       shellescape(plugin_root_dir.'/vim-addon-manager', 1)
   endif
-  call vam#ActivateAddons(['github:oblitum/clang_complete'], {'auto_install' : 0})
+  call vam#ActivateAddons(['clang_complete'], {'auto_install' : 0})
 endfun
 call SetupVAM()
 
@@ -122,10 +122,12 @@ autocmd BufRead * exe "normal zR"
 "let OmniCpp_MayCompleteArrow = 0
 "let OmniCpp_MayCompleteScope = 0
 let clang_library_path='/usr/lib'
+let g:clang_use_library=1
 let clang_complete_auto=0
 set completeopt=menu,longest
 
 nnoremap <silent> <Leader>f :FufFile<CR>
+nnoremap <silent> <Leader>o :FufCoverageFile<CR>
 "nnoremap <silent> <Leader>o :CommandT<CR>
 
 "close preview tags window
