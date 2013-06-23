@@ -3,22 +3,26 @@
 ---------------------------
 
 theme = {}
-theme.confdir       = awful.util.getdir("config").."/themes/default"
 
 theme.font          = "sans 8"
+
+-- theme.confdir       = awful.util.getdir("config").."/themes/default"
+theme.confdir       = os.getenv("HOME").."/.config/awesome/themes/default"
+
 theme.hilight       = "#ffffff"
 
 theme.bg_normal     = "#222222"
 theme.bg_focus      = "#535d6c"
 theme.bg_urgent     = "#ff0000"
 theme.bg_minimize   = "#444444"
+theme.bg_systray    = theme.bg_normal
 
 theme.fg_normal     = "#aaaaaa"
 theme.fg_focus      = "#ffffff"
 theme.fg_urgent     = "#ff0000"
 theme.fg_minimize   = "#0000ff"
 
-theme.border_width  = "1"
+theme.border_width  = 1
 theme.border_normal = "#000000"
 theme.border_focus  = "#535d6c"
 theme.border_marked = "#91231c"
@@ -54,8 +58,8 @@ theme.tasklist_floating_icon = "/usr/share/awesome/themes/default/tasklist/float
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
 theme.menu_submenu_icon = "/usr/share/awesome/themes/default/submenu.png"
-theme.menu_height = "15"
-theme.menu_width  = "180"
+theme.menu_height = 15
+theme.menu_width  = 100
 
 -- You can add as many variables as
 -- you wish and access them by using
@@ -87,7 +91,9 @@ theme.titlebar_maximized_button_normal_active = "/usr/share/awesome/themes/defau
 theme.titlebar_maximized_button_focus_active  = "/usr/share/awesome/themes/default/titlebar/maximized_focus_active.png"
 
 -- You can use your own command to set your wallpaper
-theme.wallpaper_cmd = { "nitrogen --restore" }
+--theme.wallpaper = "/usr/share/awesome/themes/default/background.png"
+theme.wallpaper = os.getenv("HOME").."/wallpapers/White_Arch_Wall_ by_kpolicano_1920x1080.jpg"
+--theme.wallpaper_cmd = { "nitrogen --restore" }
 --theme.wallpaper_cmd = { "awsetbg /usr/share/awesome/themes/default/background.png" }
 
 -- You can use your own layout icons like this:
@@ -105,6 +111,11 @@ theme.layout_spiral  = "/usr/share/awesome/themes/default/layouts/spiralw.png"
 theme.layout_dwindle = "/usr/share/awesome/themes/default/layouts/dwindlew.png"
 
 theme.awesome_icon = "/usr/share/awesome/icons/awesome16.png"
+
+-- Define the icon theme for application icons. If not set then the icons 
+-- from /usr/share/icons and /usr/share/icons/hicolor will be used.
+theme.icon_theme = nil
+
 -- {{{ Widget icons
 theme.widget_cpu    = theme.confdir .. "/cpu.png"
 theme.widget_bat    = theme.confdir .. "/bat.png"
@@ -113,20 +124,20 @@ theme.widget_fs     = theme.confdir .. "/disk.png"
 theme.widget_netdown= theme.confdir .. "/down.png"
 theme.widget_netup  = theme.confdir .. "/up.png"
 theme.widget_wifi   = theme.confdir .. "/wifi.png"
-theme.widget_pacman = theme.confdir .. "/wifi.png"
+theme.widget_pacman = theme.confdir .. "/pacman.png"
 theme.widget_mail   = theme.confdir .. "/mail.png"
 --theme.widget_vol    = theme.confdir .. "/vol.png"
-theme.widget_vol_mute= "/usr/share/icons/Tango/16x16/status/audio-volume-muted.png"
-theme.widget_vol_hi  = "/usr/share/icons/Tango/16x16/status/audio-volume-high.png"
-theme.widget_vol_mid = "/usr/share/icons/Tango/16x16/status/audio-volume-medium.png"
-theme.widget_vol_low= "/usr/share/icons/Tango/16x16/status/audio-volume-low.png"
+theme.widget_vol_mute= "/usr/share/icons/gnome/16x16/status/audio-volume-muted.png"
+theme.widget_vol_hi  = "/usr/share/icons/gnome/16x16/status/audio-volume-high.png"
+theme.widget_vol_mid = "/usr/share/icons/gnome/16x16/status/audio-volume-medium.png"
+theme.widget_vol_low= "/usr/share/icons/gnome/16x16/status/audio-volume-low.png"
 theme.widget_org    = theme.confdir .. "/cal.png"
 theme.widget_date   = theme.confdir .. "/time.png"
 theme.widget_crypto = theme.confdir .. "/crypto.png"
 theme.widget_sep    = theme.confdir .. "/separator.png"
-theme.widget_mpd_playing    = "/usr/share/icons/Tango/16x16/actions/media-playback-start.png"
-theme.widget_mpd_paused    = "/usr/share/icons/Tango/16x16/actions/media-playback-pause.png"
-theme.widget_mpd_stopped    = "/usr/share/icons/Tango/16x16/actions/media-playback-stop.png"
+theme.widget_mpd_playing    = "/usr/share/icons/gnome/16x16/actions/media-playback-start.png"
+theme.widget_mpd_paused    = "/usr/share/icons/gnome/16x16/actions/media-playback-pause.png"
+theme.widget_mpd_stopped    = "/usr/share/icons/gnome/16x16/actions/media-playback-stop.png"
 -- }}}
 return theme
--- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:encoding=utf-8:textwidth=80
+-- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80

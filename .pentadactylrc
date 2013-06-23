@@ -1,7 +1,8 @@
-"1.0b6 (created: 2011/03/09 09:25:18)
+"hg6817
 
 loadplugins '\.(js|penta)$'
 group user
-set guioptions=bCrsT
+set guioptions=bCrsTN
+set passkeys=www.google.com/reader:jknpm<S-n><S-p>vsuo<S-o>
 
 " vim: set ft=pentadactyl:
