@@ -5,8 +5,9 @@
 theme = {}
 
 theme.font          = "sans 8"
---theme.confdir       = awful.util.getdir("config").."/themes/default"
-theme.confdir       = "/home/mrmagne/.config/awesome/themes/default"
+
+-- theme.confdir       = awful.util.getdir("config").."/themes/default"
+theme.confdir       = os.getenv("HOME").."/.config/awesome/themes/default"
 
 theme.hilight       = "#ffffff"
 
@@ -91,7 +92,7 @@ theme.titlebar_maximized_button_focus_active  = "/usr/share/awesome/themes/defau
 
 -- You can use your own command to set your wallpaper
 --theme.wallpaper = "/usr/share/awesome/themes/default/background.png"
-theme.wallpaper = "/home/mrmagne/arch_wall.png"
+theme.wallpaper = os.getenv("HOME").."/arch_wall.png"
 --theme.wallpaper_cmd = { "nitrogen --restore" }
 --theme.wallpaper_cmd = { "awsetbg /usr/share/awesome/themes/default/background.png" }
 
@@ -126,17 +127,17 @@ theme.widget_wifi   = theme.confdir .. "/wifi.png"
 theme.widget_pacman = theme.confdir .. "/pacman.png"
 theme.widget_mail   = theme.confdir .. "/mail.png"
 --theme.widget_vol    = theme.confdir .. "/vol.png"
-theme.widget_vol_mute= "/usr/share/icons/Tango/16x16/status/audio-volume-muted.png"
-theme.widget_vol_hi  = "/usr/share/icons/Tango/16x16/status/audio-volume-high.png"
-theme.widget_vol_mid = "/usr/share/icons/Tango/16x16/status/audio-volume-medium.png"
-theme.widget_vol_low= "/usr/share/icons/Tango/16x16/status/audio-volume-low.png"
+theme.widget_vol_mute= "/usr/share/icons/gnome/16x16/status/audio-volume-muted.png"
+theme.widget_vol_hi  = "/usr/share/icons/gnome/16x16/status/audio-volume-high.png"
+theme.widget_vol_mid = "/usr/share/icons/gnome/16x16/status/audio-volume-medium.png"
+theme.widget_vol_low= "/usr/share/icons/gnome/16x16/status/audio-volume-low.png"
 theme.widget_org    = theme.confdir .. "/cal.png"
 theme.widget_date   = theme.confdir .. "/time.png"
 theme.widget_crypto = theme.confdir .. "/crypto.png"
 theme.widget_sep    = theme.confdir .. "/separator.png"
-theme.widget_mpd_playing    = "/usr/share/icons/Tango/16x16/actions/media-playback-start.png"
-theme.widget_mpd_paused    = "/usr/share/icons/Tango/16x16/actions/media-playback-pause.png"
-theme.widget_mpd_stopped    = "/usr/share/icons/Tango/16x16/actions/media-playback-stop.png"
+theme.widget_mpd_playing    = "/usr/share/icons/gnome/16x16/actions/media-playback-start.png"
+theme.widget_mpd_paused    = "/usr/share/icons/gnome/16x16/actions/media-playback-pause.png"
+theme.widget_mpd_stopped    = "/usr/share/icons/gnome/16x16/actions/media-playback-stop.png"
 -- }}}
 return theme
 -- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80

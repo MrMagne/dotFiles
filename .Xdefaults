@@ -7,13 +7,13 @@ URxvt.urgentOnBell:     true
 URxvt*scrollBar_right:  true
 URxvt.urlLauncher:      xdg-open
 URxvt.matcher.button:   1
-URxvt.perl-ext-common:  matcher,readline,default
+URxvt.perl-ext-common:  matcher,readline,default,tabbedex
 URxvt.borderless:       false
 
 URxvt*scrollTtyOutput:      false
 URxvt*scrollWithBuffer:     true
 URxvt*scrollTtyKeypress:    true
-urxvt*saveLines:            10000
+URxvt*saveLines:            10000
 
 ! Black
 URxvt*color0:           #262626
@@ -49,4 +49,5 @@ URxvt*color15:          #EEEEEF
 
 Xft.lcdfilter:  lcddefault
 Xft.hintstyle:  hintslight
+Xft.hinting: true
 

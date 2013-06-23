@@ -10,6 +10,8 @@ $if mode=vi
   "\e[7~": beginning-of-line
   "\e[2~": quoted-insert # Insert
   "\e[3~": delete-char
+  "\C-e": shell-expand-line
+  "\C-a": glob-expand-word
   set keymap vi
   "gg": beginning-of-history
   "G": end-of-history

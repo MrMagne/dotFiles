@@ -14,6 +14,7 @@ local menubar = require("menubar")
 local vicious = require("vicious")
 -- Dynamic tagging library
 -- require("shifty")
+local menu = require("menu")
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -82,9 +83,10 @@ local layouts =
 -- {{{ Wallpaper
 -- -- beautiful.wallpaper = os.getenv("HOME").."/wallpapers/Arch_Wall_ by_kpolicano_1920x1080"
 if beautiful.wallpaper then
-    for s = 1, screen.count() do
-        gears.wallpaper.maximized(beautiful.wallpaper, s, true)
-    end
+  gears.wallpaper.maximized(beautiful.wallpaper, nil, true)
+  --  for s = 1, screen.count() do
+  --      gears.wallpaper.maximized(beautiful.wallpaper, s, true)
+  --  end
 end
 -- }}}
   mylayoutitems = {}
@@ -114,12 +116,12 @@ end
   -- applications menu
   -- require('freedesktop.utils')
   -- freedesktop.utils.terminal = terminal  -- default: "xterm"
-  -- freedesktop.utils.icon_theme = 'Tango' -- look inside /usr/share/icons/, default: nil (don't use icon theme)
+  -- freedesktop.utils.icon_theme = 'gnome' -- look inside /usr/share/icons/, default: nil (don't use icon theme)
   -- require('freedesktop.menu')
   --require("debian.menu")
 
   --free_desktop_menu = freedesktop.menu.new()
-  free_desktop_menu = {}
+  free_desktop_menu = xdgmenu
 
 myawesomemenu = {
    { "manual", terminal .. " -e man awesome" },
@@ -129,7 +131,7 @@ myawesomemenu = {
 }
 
 favoriteapps = {
-                 -- { "thunar", "thunar", freedesktop.utils.lookup_icon({ icon="system-file-manager" }) },
+                 { "spacefm", "spacefm", "/usr/share/icons/gnome/16x16/apps/system-file-manager.png" },
                  --{ "pcmanfm", "pcmanfm", freedesktop.utils.lookup_icon({ icon="system-file-manager" }) },
                  --{ "chromium", "chromium", "/usr/share/icons/hicolor/16x16/apps/chromium.png" },
                  { "firefox", "firefox", "/usr/share/icons/hicolor/16x16/apps/firefox.png" },
@@ -137,20 +139,20 @@ favoriteapps = {
                  --{ "gbemol", "gbemol", "/usr/share/pixmaps/gbemol.png" },
                  { "smplayer", "smplayer", "/usr/share/icons/hicolor/16x16/apps/smplayer.png" },
                  { "gVim", "gvim", "/usr/share/pixmaps/gvim.png" },
-                 -- { "calc", "gcalctool", freedesktop.utils.lookup_icon({ icon="calc" }) },
+                 --{ "calc", "galculator", "/usr/share/icons/gnome/16x16/apps/accessories-calculator.png" },
                  --{ "gcstar", "gcstar", "/usr/share/pixmaps/gcstar.png" },
                  --{ "libreoffice", "soffice -writer", "/usr/share/icons/hicolor/16x16/apps/ooo-writer.png" },
                  --{ "libreoffice -impress", "soffice -impress", "/usr/share/icons/hicolor/16x16/apps/ooo-impress.png" },
                  --{ "libreoffice -calc", "soffice -calc", "/usr/share/icons/hicolor/16x16/apps/ooo-calc.png" },
-                 --{ "scrabble", "/home/archy/WordBiz/wordbiz", "/usr/share/icons/Tango/16x16/actions/format-text-bold.png" },
-                 -- { "terminal", terminal, freedesktop.utils.lookup_icon({ icon="terminal" }) },
-                 --{ "mplayerTube", "/home/archy/mplayerTube.sh", "/usr/share/icons/Tango/16x16/mimetypes/video-x-generic.png" },
+                 --{ "scrabble", "/home/archy/WordBiz/wordbiz", "/usr/share/icons/gnome/16x16/actions/format-text-bold.png" },
+                 { "terminal", terminal, "/usr/share/icons/gnome/16x16/apps/utilities-terminal.png" },
+                 --{ "mplayerTube", "/home/archy/mplayerTube.sh", "/usr/share/icons/gnome/16x16/mimetypes/video-x-generic.png" },
 }
 
-system_items = { { "shutdown", "sudo /sbin/poweroff", "/usr/share/icons/Tango/16x16/actions/system-shutdown.png" },
-                 { "reboot", "sudo /sbin/reboot", "/usr/share/icons/Tango/16x16/actions/reload3.png" },
-                 { "suspend", "sudo /usr/sbin/pm-suspend", "/usr/share/icons/Tango/16x16/actions/player_pause.png" },
-                 { "hibernate", "sudo /usr/sbin/pm-hibernate", "/usr/share/icons/Tango/16x16/actions/player_stop.png" }
+system_items = { { "shutdown", "sudo /sbin/poweroff", "/usr/share/icons/gnome/16x16/actions/system-shutdown.png" },
+                 { "reboot", "sudo /sbin/reboot", "/usr/share/icons/gnome/16x16/actions/reload3.png" },
+                 { "suspend", "sudo /usr/sbin/pm-suspend", "/usr/share/icons/gnome/16x16/actions/player_pause.png" },
+                 { "hibernate", "sudo /usr/sbin/pm-hibernate", "/usr/share/icons/gnome/16x16/actions/player_stop.png" }
 }
 --menu_separator = { "", height="1" }
 
@@ -397,25 +399,30 @@ myneticondown:set_image(beautiful.widget_netdown)
 netwidgetdown = wibox.widget.textbox()
 netwidgetdown.width=30
 -- Register widget
-vicious.register(netwidgetdown, vicious.widgets.net, '<span color="#CC9393">${wlan0 down_kb}</span> ', 3)
+vicious.register(netwidgetdown, vicious.widgets.net, '<span color="#CC9393">${eth0 down_kb}</span> ', 3)
 
 -- Initialize widget
 netwidgetup = wibox.widget.textbox()
 netwidgetup.width=30
 -- Register widget
-vicious.register(netwidgetup, vicious.widgets.net, '<span color="#7F9F7F">${wlan0 up_kb}</span>', 3)
+vicious.register(netwidgetup, vicious.widgets.net, '<span color="#7F9F7F">${eth0 up_kb}</span>', 3)
 -- }}}
 
 -- {{{ CPU usage and temperature
 vicious.cache(vicious.widgets.cpu)
 cpuicon = wibox.widget.imagebox()
 cpuicon:set_image(beautiful.widget_cpu)
+cpu_box = wibox.layout.fixed.horizontal()
 cpuWidgetButtons = awful.util.table.join(
     awful.button({ }, 1, 
       function ()
         cpus_visible = not cpus_visible
-        for i,c in ipairs(cpus) do
-          c.visible = cpus_visible
+        for i = 1,2 do
+          if cpus_visible then
+            cpu_box:add(cpus[i])
+          else
+            cpu_box:reset()
+          end
         end
       end)
 )
@@ -432,7 +439,6 @@ cpus = {}
 cpus_visible = false
 for i = 1,2 do
   cpus[i] = awful.widget.graph()
-  cpus[i].visible = cpus_visible
   cpus[i]:set_width(40):set_height(14)
   cpus[i]:set_background_color(beautiful.fg_off_widget)
   cpus[i]:set_border_color(beautiful.border_marked)
@@ -469,16 +475,21 @@ vicious.register(membar, vicious.widgets.mem, "$1", 13)
 -- {{{ Pacman widget
 pacman_icon = wibox.widget.imagebox()
 pacman_icon:set_image(beautiful.widget_pacman)
+pacman_box = wibox.layout.fixed.horizontal()
 pacman = wibox.widget.textbox()
+pacman_visible = false
 --vicious.register(pacman, vicious.widgets.pkg, "$1", 300, "Arch")
 vicious.register(pacman, vicious.widgets.pkg, 
   function(widget,args) 
     if (args[1]==0) then
-      pacman.visible = false
-      pacman_icon.visible = false
+      pacman_box:reset()
+      pacman_visible = false
     else
-      pacman.visible = true
-      pacman_icon.visible = true
+      if not pacman_visible then
+        pacman_box:add(pacman)
+        pacman_box:add(pacman_icon)
+        pacman_visible = true
+      end
     end
     return args[1] 
   end, 300, "Arch")
@@ -600,8 +611,7 @@ for s = 1, screen.count() do
     right_layout:add(separator)
     right_layout:add(cpuicon)
     right_layout:add(cpugraph)
-    right_layout:add(cpus[1]) --FIXME
-    right_layout:add(cpus[2]) --FIXME
+    right_layout:add(cpu_box)
     right_layout:add(separator)
     right_layout:add(baticon)
     right_layout:add(batwidget)
@@ -618,10 +628,10 @@ for s = 1, screen.count() do
     right_layout:add(volbar)
     right_layout:add(volwidget)
     if s == 1 then right_layout:add(wibox.widget.systray()) end
-    right_layout:add(mytextclock)
-    right_layout:add(pacman_icon)
-    right_layout:add(pacman)
     right_layout:add(separator)
+    right_layout:add(mytextclock)
+    right_layout:add(separator)
+    right_layout:add(pacman_box)
     right_layout:add(mylayoutbox[s])
 
     -- Now bring it all together (with the tasklist in the middle)
@@ -722,12 +732,23 @@ globalkeys = awful.util.table.join(
 )
 
 clientkeys = awful.util.table.join(
+    awful.key({ modkey, "Shift"   }, "Return",
+      function (c)
+        path = c.name:match(".*@.*:(.*)") 
+        if not path then
+          path = os.getenv("HOME")
+        else
+          path = string.gsub(path, "~", os.getenv("HOME"))
+        end
+        awful.util.spawn(terminal.." -cd \""..path.."\"")
+      end),
     awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
     awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
+    awful.key({ modkey,           }, "s",      function (c) c.sticky = not c.sticky          end),
     awful.key({ modkey,           }, "n",
         function (c)
             -- The client currently has the input focus, so it cannot be
@@ -826,6 +847,8 @@ awful.rules.rules = {
       --properties = { floating = true } },
     { rule = { class = "pinentry" },
       properties = { floating = true } },
+    { rule = { class = "Galculator" },
+      properties = { floating = true } },
     { rule = { class = "Gcalctool" },
       properties = { floating = true } },
     -- { rule = { class = "gimp" },
@@ -836,12 +859,15 @@ awful.rules.rules = {
       properties = { floating = true, ontop = true } },
     { rule = { class = "Enemy Territory" },
       properties = { floating = true, ontop = true, modal=true, focus=true }, callback = awful.placement.centered },
+    { rule = { class = "Plugin-container" },
+      properties = { floating = true, ontop = true, fullscreen=true, focus=true }, callback = awful.placement.centered },
     { rule = { class = "Qt4-ssh-askpass" },
       properties = { floating = true, ontop = true, modal=true, focus=true }, callback = awful.placement.centered },
     { rule = { class = "Firefox", role="Manager" },
       properties = { focus=false }, callback = awful.client.setslave },
     { rule = { class = "URxvt" },
       callback = awful.client.setslave },
+    { rule = { name="Crack Attack!"}, properties = { floating=true}},
 
     -- Set Firefox to always map on tags number 2 of screen 1.
     -- { rule = { class = "Firefox" },
@@ -915,5 +941,9 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 --
---os.execute("gnome-keyring-daemon")
-os.execute("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &")
+-- os.execute("beep")
+-- os.execute("gnome-keyring-daemon")
+-- os.execute("/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &")
+-- os.execute("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &")
+-- os.execute("gnome-keyring-daemon -r --components=pkcs11,secrets,ssh,gpg,login")
+-- os.execute("gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg,login")
