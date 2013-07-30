@@ -4,5 +4,6 @@ loadplugins '\.(js|penta)$'
 group user
 set guioptions=bCrsTN
 set passkeys=www.google.com/reader:jknpm<S-n><S-p>vsuo<S-o>
+set passkeys=cloud.feedly.com/:jknpm<S-n><S-p>vsuo<S-o>
 
 " vim: set ft=pentadactyl:
