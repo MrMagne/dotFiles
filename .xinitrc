@@ -4,6 +4,7 @@
 #
 # Executed by startx (run your window manager from here)
 source /etc/X11/xinit/xinitrc.d/*
+numlockx on
 #xset m 3 1
 
 #pcmanfm --daemon-mode &
@@ -29,7 +30,9 @@ export SAL_USE_VCLPLUGIN=gen
 #exec ck-launch-session dbus-launch --sh-syntax --exit-with-session awesome
 
 #exec dbus-launch --sh-syntax --exit-with-session awesome
-exec awesome --no-argb
+#exec awesome
+exec startlxde
+#exec awesome --no-argb
 ########################################
 killall jackd
 killall gnome-keyring-daemon

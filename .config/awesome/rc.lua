@@ -12,6 +12,11 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 -- Widget library
 local vicious = require("vicious")
+--require("obvious.clock")
+--obvious.clock.set_longformat(function () return "%T %a %d %b %Y" end)
+--require("obvious.basic_mpd")
+--require("obvious.net")
+
 -- Dynamic tagging library
 -- require("shifty")
 local menu = require("menu")
@@ -148,12 +153,13 @@ favoriteapps = {
                  { "libreoffice -calc", "soffice -calc", "/usr/share/icons/gnome/16x16/apps/libreoffice-calc.png" },
                  --{ "terminal", terminal, "/usr/share/icons/gnome/16x16/apps/utilities-terminal.png" },
                  { "mplayerTube", "/home/archy/mplayerTube.sh", "/usr/share/icons/gnome/16x16/mimetypes/video-x-generic.png" },
+                 { "radio doudou", "smplayer \"http://37.58.75.163:8744/;stream\"", "/usr/share/icons/hicolor/16x16/apps/gtk3-demo.png" },
 }
 
-system_items = { { "shutdown", "sudo /sbin/poweroff", "/usr/share/icons/gnome/16x16/actions/system-shutdown.png" },
-                 { "reboot", "sudo /sbin/reboot", "/usr/share/icons/gnome/16x16/actions/reload3.png" },
-                 { "suspend", "sudo /usr/sbin/pm-suspend", "/usr/share/icons/gnome/16x16/actions/player_pause.png" },
-                 { "hibernate", "sudo /usr/sbin/pm-hibernate", "/usr/share/icons/gnome/16x16/actions/player_stop.png" }
+system_items = { { "poweroff", "poweroff", "/usr/share/icons/gnome/16x16/actions/system-shutdown.png" },
+                 { "reboot", "reboot", "/usr/share/icons/gnome/16x16/actions/reload3.png" },
+                 { "suspend", "pm-suspend", "/usr/share/icons/gnome/16x16/actions/player_pause.png" },
+                 { "hibernate", "pm-hibernate", "/usr/share/icons/gnome/16x16/actions/player_stop.png" }
 }
 --menu_separator = { "", height="1" }
 
@@ -303,7 +309,7 @@ vicious.register(mpdwidget, vicious.widgets.mpd,
                 mympdstateicon:set_image(beautiful.widget_mpd_stopped)
             end
             return args["{Artist}"] .. " - " .. args["{Title}"] .. " "
-        end, 1)
+        end, 3)
 -- }}}
 --[[
 
@@ -344,13 +350,13 @@ myneticondown:set_image(beautiful.widget_netdown)
 netwidgetdown = wibox.widget.textbox()
 netwidgetdown.width=42
 -- Register widget
-vicious.register(netwidgetdown, vicious.widgets.net, '<span color="#CC9393">${eth0 down_kb}</span> ', 3)
+vicious.register(netwidgetdown, vicious.widgets.net, '<span color="#CC9393">${enp0s10 down_kb}</span> ', 3)
 
 -- Initialize widget
 netwidgetup = wibox.widget.textbox()
 netwidgetup.width=30
 -- Register widget
-vicious.register(netwidgetup, vicious.widgets.net, '<span color="#7F9F7F">${eth0 up_kb}</span>', 3)
+vicious.register(netwidgetup, vicious.widgets.net, '<span color="#7F9F7F">${enp0s10 up_kb}</span>', 3)
 -- }}}
 
 --[[
@@ -579,6 +585,10 @@ for s = 1, screen.count() do
     right_layout:add(mytextclock)
     right_layout:add(separator)
     right_layout:add(pacman_box)
+    --right_layout:add(obvious.net.recv("enp0s10").progressbar)
+    --right_layout:add(obvious.net.send("enp0s10").progressbar)
+    --right_layout:add(obvious.basic_mpd())
+--    right_layout:add(obvious.clock())
     right_layout:add(mylayoutbox[s])
 
     -- Now bring it all together (with the tasklist in the middle)
