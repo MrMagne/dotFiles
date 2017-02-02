@@ -1,15 +1,23 @@
 set editing-mode vi
+$if cgdb
+  set editing-mode emacs
+$endif
 
 $if mode=vi
   set keymap vi-insert
-  "\C-n": complete
+  #"\C-n": complete
+  "\C-n": next-history
+  "\C-p": previous-history
   "\e[1~": beginning-of-line
   "\e[4~": end-of-line
   "\e[5~": beginning-of-history
   "\e[6~": end-of-history
   "\e[7~": beginning-of-line
+  "\e[8~": end-of-line
   "\e[2~": quoted-insert # Insert
   "\e[3~": delete-char
+  "\C-e": shell-expand-line
+  "\C-a": glob-expand-word
   set keymap vi
   "gg": beginning-of-history
   "G": end-of-history
@@ -18,6 +26,7 @@ $if mode=vi
   "\e[5~": beginning-of-history
   "\e[6~": end-of-history
   "\e[7~": beginning-of-line
+  "\e[8~": end-of-line
   "\e[2~": quoted-insert # Insert
   "\e[3~": delete-char
 $endif
