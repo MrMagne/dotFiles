@@ -13,6 +13,10 @@ try
   Plugin 'Valloric/YouCompleteMe' "run ''./install.py --clang-completer --tern-completer --racer-completer --gocode-completer'' after update
   Plugin 'leafgarland/typescript-vim'
   Plugin 'powerman/vim-plugin-AnsiEsc'
+  Plugin 'scrooloose/nerdtree.git'
+  Plugin 'vim-scripts/a.vim'
+  Plugin 'tpope/vim-fugitive'
+  Plugin 'Matt-Deacalion/vim-systemd-syntax'
   call vundle#end()
 endtry
 
