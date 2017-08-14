@@ -24,7 +24,8 @@ set re=1
 set nocp
 set cino=:0,l1,N-s,(0,W4,g1
 filetype plugin indent on
-set grepprg=grep\ -nH\ $*
+"set grepprg=grep\ -nH\ $*
+set grepprg=rg\ --vimgrep
 let g:tex_flavor = "latex"
 
 "helptags ~/.vim/doc
@@ -32,6 +33,11 @@ let g:tex_flavor = "latex"
 "nnoremap K :Man <cword><CR>
 set undofile
 set undodir=~/.vim/undofiles
+
+" re-reads buffers from file if modified outside of vim, rescanning on focus
+" gained or bufEnter
+set autoread
+au FocusGained,BufEnter * :checktime
 
 "source ${VIM}/vimfiles/macros/clewn_mappings.vim
 "let s:term = "urxvtc"
@@ -148,6 +154,8 @@ let g:load_doxygen_syntax=1
 hi StatusLine guibg=grey50 guifg=black 
 hi StatusLineNC guifg=black 
 hi LineNr guibg=black
+
+hi YcmErrorSection ctermfg=black ctermbg=red
 "FIXME overridden by filetype syntax
 "syntax match Tab /\t/
 "hi Tab gui=underline guifg=blue ctermbg=blue
