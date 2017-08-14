@@ -12,8 +12,8 @@ local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 
 -- Widget library
-require("battery")
-require("brightness")
+--require("battery")
+--require("brightness")
 require("volume")
 separator = wibox.widget.textbox()
 separator:set_text("|")
@@ -59,7 +59,8 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(awful.util.get_themes_dir() .. "default/theme.lua")
-beautiful.wallpaper = "/usr/share/archlinux/wallpaper/archlinux-simplyblack.png"
+--beautiful.wallpaper = "/usr/share/archlinux/wallpaper/archlinux-simplyblack.png"
+beautiful.wallpaper = os.getenv("HOME").."/wallpapers/solarflairnbw_3360x1050.png"
 
 
 -- --local baticon = wibox.widget.imagebox(beautiful.widget_batt)
@@ -303,7 +304,7 @@ local function set_wallpaper(s)
         if type(wallpaper) == "function" then
             wallpaper = wallpaper(s)
         end
-        gears.wallpaper.maximized(wallpaper, s, true)
+        gears.wallpaper.maximized(wallpaper, s, false, {x= -s.geometry.x, y= -s.geometry.y})
     end
 end
 
@@ -363,9 +364,9 @@ awful.screen.connect_for_each_screen(function(s)
             wibox.widget.systray(),
             volume_widget,
             separator,
-            brightness_icon, brightness_widget,
-            separator,
-            battery_widget,
+            --brightness_icon, brightness_widget,
+            --separator,
+            --battery_widget,
             --{
             --  volbar,
             --  forced_height = 12,
@@ -436,8 +437,10 @@ globalkeys = awful.util.table.join(
     ),
     --awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
     --          {description = "show main menu", group = "awesome"}),
-    awful.key({ modkey, "Control", altkey }, "Delete", function () mymainmenu:show() end,
-              {description = "show main menu", group = "awesome"}),
+    --awful.key({ modkey, "Control", altkey }, "Delete", function () mymainmenu:show() end,
+    --          {description = "show main menu", group = "awesome"}),
+    awful.key({ modkey, "Control", altkey }, "Delete", function () awful.util.spawn("i3lock -i "..beautiful.wallpaper) end,
+              {description = "Lock Screen", group = "awesome"}),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,

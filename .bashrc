@@ -10,6 +10,8 @@ stty -ixon
 #  export SSH_AUTH_SOCK
 #fi
 
+source ~/dev/git-subrepo/.rc
+
 export LANG=en_US.UTF8
 export PATH=~/bin:$PATH
 export HISTCONTROL=ignoreboth
