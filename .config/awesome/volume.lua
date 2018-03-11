@@ -19,18 +19,18 @@ volume_widget = wibox.widget {
 }
 
 volume_widget.widget:buttons(awful.util.table.join(
-    awful.button({ }, 1, function () awful.util.spawn("amixer set Master toggle") end),
-    awful.button({ }, 2, function () awful.util.spawn("amixer set Master toggle") end),
-    awful.button({ }, 3, function () awful.util.spawn(terminal.." -e alsamixer") end),
-    awful.button({ }, 4, function () awful.util.spawn("amixer set Master 5%+ >/dev/null") end),
-    awful.button({ }, 5, function () awful.util.spawn("amixer set Master 5%- >/dev/null") end),
-    awful.button({ }, 6, function () awful.util.spawn("amixer set Master 5%- >/dev/null") end),
-    awful.button({ }, 7, function () awful.util.spawn("amixer set Master 5%+ >/dev/null") end)
+    awful.button({ }, 1, function () awful.util.spawn("amixer -c0 set Speaker 0%") end),
+    awful.button({ }, 2, function () awful.util.spawn("amixer -c0 set Speaker 50%") end),
+    awful.button({ }, 3, function () awful.util.spawn(terminal.." -e alsamixer -c0") end),
+    awful.button({ }, 4, function () awful.util.spawn("amixer -c0 set Speaker 5%+ >/dev/null") end),
+    awful.button({ }, 5, function () awful.util.spawn("amixer -c0 set Speaker 5%- >/dev/null") end),
+    awful.button({ }, 6, function () awful.util.spawn("amixer -c0 set Speaker 5%- >/dev/null") end),
+    awful.button({ }, 7, function () awful.util.spawn("amixer -c0 set Speaker 5%+ >/dev/null") end)
 ))
 
 
 watch(
-    'amixer sget Master', 1,
+    'amixer -c0 sget Speaker', 1,
     function(widget, stdout, stderr, reason, exit_code)   
         local mute = string.match(stdout, "%[(o%D%D?)%]")
         local volume = string.match(stdout, "(%d?%d?%d)%%")
