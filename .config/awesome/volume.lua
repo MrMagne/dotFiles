@@ -52,7 +52,7 @@ volume_widget:connect_signal("button::press", function(_,_,_,button)
     elseif (button == 5) then awful.spawn("amixer -D pulse sset Master 5%- > /dev/null", false)
     elseif (button == 1) then awful.spawn("amixer -D pulse sset Master toggle", false)
     elseif (button == 2) then awful.spawn("amixer -D pulse sset Master toggle", false)
-    elseif (button == 3) then awful.spawn(terminal.."-e alsamixer", false)
+    elseif (button == 3) then awful.spawn("pavucontrol", false)
     end
 
     spawn.easy_async(request_command, function(stdout, stderr, exitreason, exitcode)
