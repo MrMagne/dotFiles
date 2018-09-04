@@ -13,7 +13,6 @@ stty -ixon
 source ~/dev/git-subrepo/.rc
 
 export LANG=en_US.UTF8
-export PATH=~/bin:$PATH
 export HISTCONTROL=ignoreboth
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -26,6 +25,8 @@ export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_se=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 export LESS_TERMCAP_ue=$'\E[0m'
+
+export LS_COLORS="${LS_COLORS}:ow=34;40:"
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 unset HISTFILESIZE
@@ -46,7 +47,7 @@ alias r='fc -s'
 alias h='fc -l'
 alias cmn='cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=1  -DCMAKE_CXX_FLAGS="$(cat ~/.clang-commandline)" -G Ninja -DCMAKE_CXX_COMPILER=/usr/bin/clang++'
 alias of301='source /etc/openfoam-3.0.1.sh'
-alias ofoam="export PS1=\"\[\e[1;34m\]OpenFoam\[\e[0;37m\]\${PS1}\" && source /opt/OpenFOAM/OpenFOAM-4.x/etc/bashrc"
+alias ofoam="unset LESS_TERMCAP_mb LESS_TERMCAP_md LESS_TERMCAP_me LESS_TERMCAP_so LESS_TERMCAP_se LESS_TERMCAP_us LESS_TERMCAP_ue && export PS1=\"\[\e[1;34m\]OpenFoam\[\e[0;37m\]\${PS1}\" && source /opt/OpenFOAM/OpenFOAM-4.1/etc/bashrc"
 alias mj='make -j7'
 
 #PS1='[\u@\h \w]($?)\$ '
