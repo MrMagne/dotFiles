@@ -14,7 +14,7 @@ local hotkeys_popup = require("awful.hotkeys_popup").widget
 -- Widget library
 --require("battery")
 --require("brightness")
-require("volume")
+local volume_widget = require("volume")
 separator = wibox.widget.textbox()
 separator:set_text("|")
 -- local lain = require("lain")
@@ -362,6 +362,7 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             mykeyboardlayout,
             wibox.widget.systray(),
+            separator,
             volume_widget,
             separator,
             --brightness_icon, brightness_widget,
