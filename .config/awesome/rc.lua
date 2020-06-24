@@ -11,12 +11,82 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 
+-- Themes define colours, icons, font and wallpapers.
+beautiful.init(awful.util.get_themes_dir() .. "default/theme.lua")
+--beautiful.wallpaper = "/usr/share/archlinux/wallpaper/archlinux-simplyblack.png"
+beautiful.wallpaper = os.getenv("HOME").."/wallpapers/solarflairnbw_3360x1050.png"
+
 -- Widget library
 --require("battery")
 --require("brightness")
-local volume_widget = require("volume")
-local cpu_widget = require("cpu")
-local ram_widget = require("ram")
+-- local volume_widget = require("volume")
+-- local cpu_widget = require("cpu")
+-- local ram_widget = require("ram")
+local lain = require("lain")
+local volume= lain.widget.pulse {
+    settings = function()
+        vlevel = volume_now.left .. "%"
+        if volume_now.muted == "yes" then
+            vlevel = vlevel .. " M"
+        end
+        widget:set_markup(lain.util.markup(beautiful.fg_normal, vlevel))
+    end
+}
+local volume_bar = lain.widget.pulsebar{
+  colors = {
+    background = "#000000",
+    unmute = "#116611",
+    mute = "#661111"
+  }
+}
+--volume_bar.bar.shape = gears.shape.rounded_bar
+volume.widget:buttons(awful.util.table.join(
+    awful.button({}, 1, function() -- left click
+        awful.spawn("pavucontrol")
+    end),
+    awful.button({}, 2, function() -- middle click
+        os.execute(string.format("pactl set-sink-mute %d toggle", volume.device))
+        volume.update()
+        volume_bar.update()
+    end),
+    awful.button({}, 3, function() -- right click
+        awful.spawn("pavucontrol")
+    end),
+    awful.button({}, 4, function() -- scroll up
+        os.execute(string.format("pactl set-sink-volume %d +1%%", volume.device))
+        volume.update()
+        volume_bar.update()
+    end),
+    awful.button({}, 5, function() -- scroll down
+        os.execute(string.format("pactl set-sink-volume %d -1%%", volume.device))
+        volume.update()
+        volume_bar.update()
+    end)
+))
+volume_bar.bar:buttons(awful.util.table.join(
+    awful.button({}, 1, function() -- left click
+        awful.spawn("pavucontrol")
+    end),
+    awful.button({}, 2, function() -- middle click
+        os.execute(string.format("pactl set-sink-mute %d toggle", volume.device))
+        volume.update()
+        volume_bar.update()
+    end),
+    awful.button({}, 3, function() -- right click
+        awful.spawn("pavucontrol")
+    end),
+    awful.button({}, 4, function() -- scroll up
+        os.execute(string.format("pactl set-sink-volume %d +1%%", volume.device))
+        volume.update()
+        volume_bar.update()
+    end),
+    awful.button({}, 5, function() -- scroll down
+        os.execute(string.format("pactl set-sink-volume %d -1%%", volume.device))
+        volume.update()
+        volume_bar.update()
+    end)
+))
+-- local separators = lain.util.separators
 separator = wibox.widget.textbox()
 separator:set_text("|")
 -- local lain = require("lain")
@@ -59,11 +129,6 @@ end
 -- }}}
 
 -- {{{ Variable definitions
--- Themes define colours, icons, font and wallpapers.
-beautiful.init(awful.util.get_themes_dir() .. "default/theme.lua")
---beautiful.wallpaper = "/usr/share/archlinux/wallpaper/archlinux-simplyblack.png"
-beautiful.wallpaper = os.getenv("HOME").."/wallpapers/solarflairnbw_3360x1050.png"
-
 
 -- --local baticon = wibox.widget.imagebox(beautiful.widget_batt)
 -- local bat = lain.widget.bat({
@@ -365,11 +430,26 @@ awful.screen.connect_for_each_screen(function(s)
             mykeyboardlayout,
             wibox.widget.systray(),
             separator,
-            ram_widget,
-            separator,
-            cpu_widget,
-            separator,
-            volume_widget,
+            -- ram_widget,
+            -- separator,
+            -- cpu_widget,
+            -- separator,
+            {
+              {
+                volume_bar.bar,
+                forced_width  = 8,
+                --forced_height = 8,
+                direction     = 'east',
+                layout        = wibox.container.rotate,
+                --border_width = 2,
+                --border_color  = beautiful.border_color,
+                -- layout = wibox.layout.fixed.horizontal,
+              },
+              volume,
+              layout = wibox.layout.fixed.horizontal,
+              --layout = wibox.layout.stack
+            },
+            --volumewidget,
             separator,
             --brightness_icon, brightness_widget,
             --separator,
@@ -403,14 +483,20 @@ globalkeys = awful.util.table.join(
     -- Multimedia keys
     awful.key({ }, "XF86AudioRaiseVolume",    function ()
       awful.spawn.easy_async("amixer set Master 2%+", function(stdout, stderr, reason, exit_code)
+        volume.update()
+        volume_bar.notify()
       end)
     end),
     awful.key({ }, "XF86AudioLowerVolume",    function ()
       awful.spawn.easy_async("amixer set Master 2%-", function(stdout, stderr, reason, exit_code)
+        volume.update()
+        volume_bar.notify()
       end)
     end),
     awful.key({ }, "XF86AudioMute",    function ()
       awful.spawn.easy_async("amixer set Master toggle", function(stdout, stderr, reason, exit_code)
+        volume.update()
+        volume_bar.notify()
       end)
     end),
     awful.key({ }, "XF86MonBrightnessDown",    function ()
@@ -744,4 +830,22 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+
+-- local ouf = assert(io.open("/home/prevot/.awesome-memory.log", "w"))
+-- ouf:write("beginning log\n")
+-- ouf:flush()
+-- local t = timer({ timeout = 600 })
+-- t:connect_signal("timeout", function()
+--   collectgarbage("collect")
+--   ouf:write(os.date(), "\nLua memory usage:", collectgarbage("count"))
+--   ouf:write("\nObjects alive:\n")
+--   for name, obj in pairs{ button = button, client = client, drawable = drawable, drawin = drawin, key = key, screen = screen, tag = tag } do
+--     ouf:write("\t"..name)
+--     ouf:write("\t\t"..obj.instances().."\n")
+--   end
+--   ouf:write("\n")
+--   ouf:flush()
+-- end)
+-- t:start()
+-- t:emit_signal("timeout")
 -- }}}

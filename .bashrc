@@ -47,7 +47,9 @@ alias r='fc -s'
 alias h='fc -l'
 alias cmn='cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=1  -DCMAKE_CXX_FLAGS="$(cat ~/.clang-commandline)" -G Ninja -DCMAKE_CXX_COMPILER=/usr/bin/clang++'
 alias of301='source /etc/openfoam-3.0.1.sh'
-alias ofoam="unset LESS_TERMCAP_mb LESS_TERMCAP_md LESS_TERMCAP_me LESS_TERMCAP_so LESS_TERMCAP_se LESS_TERMCAP_us LESS_TERMCAP_ue && export PS1=\"\[\e[1;34m\]OpenFoam\[\e[0;37m\]\${PS1}\" && source /opt/OpenFOAM/OpenFOAM-4.1/etc/bashrc"
+alias ofoam="unset LESS_TERMCAP_mb LESS_TERMCAP_md LESS_TERMCAP_me LESS_TERMCAP_so LESS_TERMCAP_se LESS_TERMCAP_us LESS_TERMCAP_ue && export PS1=\"\[\e[1;34m\]OpenFoam\[\e[0;37m\]\${PS1}\" && source /opt/OpenFOAM/OpenFOAM-6/etc/bashrc"
+alias ofoam4="unset LESS_TERMCAP_mb LESS_TERMCAP_md LESS_TERMCAP_me LESS_TERMCAP_so LESS_TERMCAP_se LESS_TERMCAP_us LESS_TERMCAP_ue && export PS1=\"\[\e[1;34m\]OpenFoam\[\e[0;37m\]\${PS1}\" && source /opt/OpenFOAM/OpenFOAM-4.x/etc/bashrc"
+alias ofoamWine="unset LESS_TERMCAP_mb LESS_TERMCAP_md LESS_TERMCAP_me LESS_TERMCAP_so LESS_TERMCAP_se LESS_TERMCAP_us LESS_TERMCAP_ue && export PS1=\"\[\e[1;34m\]OpenFoamWine\[\e[0;37m\]\${PS1}\" && export WM_PROJECT_DIR=$(readlink -f ~/projects/ICE/GUI/thirdParties/OpenFOAM-4.x) PATH=$(readlink -f ~/projects/ICE/GUI/thirdParties/OpenFOAM-4.x):$PATH FOAM_ETC=1"
 alias mj='make -j7'
 
 #PS1='[\u@\h \w]($?)\$ '
@@ -55,3 +57,5 @@ alias mj='make -j7'
 PROMPT_COMMAND="export RET='$?'; ${PROMPT_COMMAND}"
 RET_VALUE='$(if [[ $RET = 0 ]]; then echo "\[\e[1;32m\]"; else echo "\[\e[1;31m\]"; fi)'
 PS1="${RET_VALUE}[\[\e[0;37m\]\u@\h \w ${RET_VALUE}]\\\$\[\e[0;37m\] "
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"

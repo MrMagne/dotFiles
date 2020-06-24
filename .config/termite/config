@@ -1,4 +1,6 @@
 [options]
+mouse_autohide = true
+scrollbar = right
 scroll_on_output = false
 scroll_on_keystroke = true
 audible_bell = false
@@ -8,7 +10,7 @@ dynamic_title = true
 urgent_on_bell = true
 clickable_url = true
 font = Droid Sans Mono 8
-scrollback_lines = 10000
+scrollback_lines = 100000
 search_wrap = true
 #icon_name = terminal
 #geometry = 640x480
@@ -17,12 +19,13 @@ search_wrap = true
 cursor_blink = system
 
 # "block", "underline" or "ibeam"
-cursor_shape = block
+cursor_shape = underline
 
 # $BROWSER is used by default if set, with xdg-open as a fallback
 #browser = xdg-open
 
 # set size hints for the window
+size_hints = true
 #size_hints = false
 
 # Hide links that are no longer valid in url select overlay mode
@@ -32,11 +35,10 @@ filter_unmatched_urls = true
 #modify_other_keys = false
 showScrollbar = true
 [colors]
-
 # special
 foreground      = #b7b8b9
 foreground_bold = #b7b8b9
-cursor          = #b7b8b9
+cursor          = #f71819
 #background      = #000000
 background      = rgba(0,0,0,0.8)
 
