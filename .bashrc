@@ -11,7 +11,7 @@ stty -ixon
 #fi
 
 export LANG=en_US.UTF8
-export PATH=~/bin:$PATH
+export PATH=~/bin:~/.cargo/bin:$PATH
 export HISTCONTROL=ignoreboth
 # append to the history file, don't overwrite it
 shopt -s histappend

@@ -60,6 +60,7 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(awful.util.get_themes_dir() .. "default/theme.lua")
+beautiful.notification_icon_size=32
 beautiful.wallpaper = "/usr/share/archlinux/wallpaper/archlinux-simplyblack.png"
 
 

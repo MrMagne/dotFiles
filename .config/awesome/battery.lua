@@ -73,4 +73,6 @@ function show_battery_warning()
 end
 
 -- popup with battery info
-battery_widget:connect_signal("mouse::enter", function() show_battery_status() end)
+battery_widget.widget:buttons(awful.util.table.join(
+    awful.button({ }, 1, function () show_battery_status() end)
+))
