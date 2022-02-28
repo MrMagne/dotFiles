@@ -2,6 +2,7 @@
 [ -z "$PS1" ] && return
 
 . /etc/profile
+[ -f ~/.privaterc ] && . ~/.privaterc
 
 #Screws up bash forward-i-search with Ctrl-S
 stty -ixon
@@ -54,8 +55,41 @@ alias mj='make -j7'
 
 #PS1='[\u@\h \w]($?)\$ '
 
-PROMPT_COMMAND="export RET='$?'; ${PROMPT_COMMAND}"
-RET_VALUE='$(if [[ $RET = 0 ]]; then echo "\[\e[1;32m\]"; else echo "\[\e[1;31m\]"; fi)'
-PS1="${RET_VALUE}[\[\e[0;37m\]\u@\h \w ${RET_VALUE}]\\\$\[\e[0;37m\] "
+call_nvm_use_if_needed() {
+  NEW_NVMRC="$(nvm_find_nvmrc)"
+  if [[ "$NEW_NVMRC" != "$CURRENT_NVMRC" ]]; then
+    if [[ -z "$NEW_NVMRC" ]]; then
+      nvm use default
+    else
+      nvm use
+    fi
+    CURRENT_NVMRC="$NEW_NVMRC"
+  fi
+}
 
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+PROMPT_COMMAND=__prompt_command    # Function to generate PS1 after CMDs
+
+__prompt_command() {
+    local Exit="$?"                # This needs to be first
+    PS1=""
+    call_nvm_use_if_needed
+
+    if [ $Exit != 0 ]; then
+      PS1+="\[\e[0;31m\]"
+    else
+      PS1+="\[\e[0;32m\]"
+    fi
+    PS1+="[\[\e[0;37m\]\u@\h \w "
+    if [ $Exit != 0 ]; then
+      PS1+="\[\e[0;31m\]"
+    else
+      PS1+="\[\e[0;32m\]"
+    fi
+    PS1+="]\\\$\[\e[0;37m\] "
+}
+source /usr/share/nvm/init-nvm.sh
+source ${NVM_BIN}/../lib/node_modules/npm/lib/utils/completion.sh
+
+# tabtab source for packages
+# uninstall by removing these lines
+[ -f ~/.config/tabtab/bash/__tabtab.bash ] && . ~/.config/tabtab/bash/__tabtab.bash || true
