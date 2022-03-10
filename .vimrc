@@ -10,13 +10,14 @@ try
   Plugin 'tikhomirov/vim-glsl'
   Plugin 'kana/vim-operator-user'
   Plugin 'rhysd/vim-clang-format'
-  Plugin 'Valloric/YouCompleteMe' "run ''./install.py --clang-completer --tern-completer --racer-completer --gocode-completer'' after update
+  "Plugin 'Valloric/YouCompleteMe' "run ''./install.py --clang-completer --tern-completer --racer-completer --gocode-completer'' after update
   Plugin 'leafgarland/typescript-vim'
   Plugin 'powerman/vim-plugin-AnsiEsc'
   Plugin 'scrooloose/nerdtree.git'
   Plugin 'vim-scripts/a.vim'
   Plugin 'tpope/vim-fugitive'
   Plugin 'Matt-Deacalion/vim-systemd-syntax'
+  Plugin 'sharat87/roast.vim'
   call vundle#end()
 endtry
 

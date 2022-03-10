@@ -534,6 +534,8 @@ globalkeys = awful.util.table.join(
     --          {description = "show main menu", group = "awesome"}),
     awful.key({ modkey, "Control", altkey }, "Delete", function () awful.util.spawn("i3lock -i "..beautiful.wallpaper) end,
               {description = "Lock Screen", group = "awesome"}),
+    awful.key({ "Control",altkey }, "l", function () awful.util.spawn("i3lock -i "..beautiful.wallpaper) end,
+              {description = "Lock Screen", group = "awesome"}),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
